@@ -1,25 +1,19 @@
 <?php
+use GDO\Core\Application;
 use GDO\Core\Logger;
 use GDO\Core\Debug;
+use GDO\Core\ModuleLoader;
 use GDO\DB\Database;
+use GDO\Language\Trans;
+use GDO\User\Session;
 use GDO\Websocket\Module_Websocket;
 use GDO\Websocket\Server\GWS_Server;
 
-include 'GDO/Websocket/gwf4-ratchet/autoload.php';
-
 # Load config
 include 'protected/config.php'; # <-- You might need to adjust this path.
-
-# Init GDO and GWF core
 include 'GDO6.php';
 
-Logger::init(null, 0x20ff);
-Debug::init();
-#Debug::enableErrorHandler();
-#Debug::enableExceptionHandler();
-#Debug::setDieOnError(GWF_ERROR_DIE);
-Debug::setMailOnError(GWF_ERROR_MAIL);
-Database::init();
+include 'GDO/Websocket/gwf4-ratchet/autoload.php';
 
 # Init some config like
 $_SERVER['REQUEST_URI'] = 'ws.php';
@@ -28,8 +22,22 @@ $_GET['fmt'] = 'json';
 $_GET['mo'] = 'Websocket';
 $_GET['me'] = 'Run';
 
-# Load
-$gwf5->loadModulesCache();
+# Bootstrap
+class WebsocketApplication extends Application
+{
+    public function isCLI() { return true; }
+}
+$app = new WebsocketApplication();
+Trans::$ISO = GWF_LANGUAGE;
+Logger::init(null, GWF_ERROR_LEVEL); # 1st init as guest
+Debug::init();
+Debug::enableErrorHandler();
+Debug::setDieOnError(false);
+Debug::setMailOnError(GWF_ERROR_MAIL);
+Database::init();
+Session::init(GWF_SESS_NAME, GWF_SESS_DOMAIN, GWF_SESS_TIME, !GWF_SESS_JS, GWF_SESS_HTTPS);
+ModuleLoader::instance()->loadModulesCache();
+// Session::instance();
 
 # Create WS
 $gws = Module_Websocket::instance();

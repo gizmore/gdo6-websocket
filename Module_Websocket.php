@@ -48,8 +48,13 @@ final class Module_Websocket extends Module
 	public function cfgWebsocketProcessorPath() { return $this->getConfigValue('ws_processor'); }
 	public function cfgAllowGuests() { return $this->getConfigValue('ws_guests'); }
 
-	public function defaultProcessorPath() { return sprintf('%sGDO/Websocket/server/GWS_NoCommands.php', GWF_PATH); }
-	public function processorClass() { return Strings::substrTo(basename($this->cfgWebsocketProcessorPath()), '.'); }
+	public function defaultProcessorPath() { return sprintf('%sGDO/Websocket/Server/GWS_NoCommands.php', GWF_PATH); }
+	public function processorClass()
+	{
+	    $path = Strings::substrFrom($this->cfgWebsocketProcessorPath(), GWF_PATH);
+	    $path = str_replace('/', '\\', $path);
+	    return Strings::substrTo($path, '.'); 
+	}
 
 	##########
 	### JS ###

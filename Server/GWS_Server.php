@@ -14,6 +14,7 @@ use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 use Exception;
+use GDO\Core\ModuleLoader;
 
 include 'GWS_Message.php';
 
@@ -187,15 +188,15 @@ final class GWS_Server implements MessageComponentInterface
 	
 	private function registerCommands()
 	{
-		foreach (Application::instance()->getActiveModules() as $module)
+		foreach (ModuleLoader::instance()->getActiveModules() as $module)
 		{
-			Filewalker::traverse($module->filePath('websocket'), [$this, 'registerModuleCommands']);
+			Filewalker::traverse($module->filePath('Websocket'), [$this, 'registerModuleCommands']);
 		}
 	}
 	
 	public function registerModuleCommands(string $entry, string $path)
 	{
-		include_once $path;
+		include $path;
 	}
 	
 	private function socketOptions()
