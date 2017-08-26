@@ -5,6 +5,7 @@ use GDO\Core\Module;
 use GDO\Date\GDO_Duration;
 use GDO\File\GDO_Path;
 use GDO\Net\GDO_Url;
+use GDO\Template\GDO_Bar;
 use GDO\Type\GDO_Checkbox;
 use GDO\Type\GDO_Int;
 use GDO\User\Session;
@@ -63,9 +64,9 @@ final class Module_Websocket extends Module
 	
 	private function configJS()
 	{
-		return sprintf('window.GWF_CONFIG.ws_url = "%s";
-window.GWF_CONFIG.ws_secret = "%s";
-window.GWF_CONFIG.ws_autoconnect = %s;',
+		return sprintf('window.GDO_CONFIG.ws_url = "%s";
+window.GDO_CONFIG.ws_secret = "%s";
+window.GDO_CONFIG.ws_autoconnect = %s;',
 				$this->cfgUrl(), $this->secret(), $this->cfgAutoConnect()?'1':'0');
 	}
 	
@@ -78,8 +79,8 @@ window.GWF_CONFIG.ws_autoconnect = %s;',
 	##############
 	### Navbar ###
 	##############
-// 	public function onRenderFor(GDO_Bar $navbar)
-// 	{
-// 		$this->templatePHP('sidebars.php', ['navbar' => $navbar]);
-// 	}
+	public function hookLeftBar(GDO_Bar $navbar)
+	{
+		$this->templatePHP('leftbar.php', ['navbar' => $navbar]);
+	}
 }
