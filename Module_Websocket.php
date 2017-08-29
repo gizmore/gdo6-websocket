@@ -1,14 +1,14 @@
 <?php
 namespace GDO\Websocket;
 
-use GDO\Core\Module;
+use GDO\Core\GDO_Module;
 use GDO\Date\GDT_Duration;
 use GDO\File\GDT_Path;
 use GDO\Net\GDT_Url;
 use GDO\Template\GDT_Bar;
 use GDO\Type\GDT_Checkbox;
 use GDO\Type\GDT_Int;
-use GDO\User\Session;
+use GDO\User\GDO_Session;
 use GDO\Util\Javascript;
 use GDO\Util\Strings;
 /**
@@ -19,7 +19,7 @@ use GDO\Util\Strings;
  * @since 4.1
  * @version 5.0
  */
-final class Module_Websocket extends Module
+final class Module_Websocket extends GDO_Module
 {
 	##############
 	### Module ###
@@ -77,7 +77,7 @@ window.GDT_CONFIG.ws_autoconnect = %s;',
 	
 	public function secret()
 	{
-		$sess = Session::instance();
+		$sess = GDO_Session::instance();
 		return $sess ? $sess->cookieContent() : 'resend';
 	}
 	

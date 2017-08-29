@@ -2,7 +2,7 @@
 namespace GDO\Websocket\Server;
 
 use GDO\Core\Logger;
-use GDO\User\User;
+use GDO\User\GDO_User;
 
 final class GWS_Global
 {
@@ -14,9 +14,9 @@ final class GWS_Global
 	public static $CONNECTIONS = array();
 	
 	##################
-	### User cache ###
+	### GDO_User cache ###
 	##################
-	public static function addUser(User $user, $conn)
+	public static function addUser(GDO_User $user, $conn)
 	{
 		self::$USERS[$user->getID()] = $user;
 		self::$CONNECTIONS[$user->getID()] = $conn;
@@ -24,7 +24,7 @@ final class GWS_Global
 	
 	public static function recacheUser(string $userid)
 	{
-		User::table()->cache->uncacheID($userid);
+		GDO_User::table()->cache->uncacheID($userid);
 
 		if (isset(self::$USERS[$userid]))
 		{
@@ -33,11 +33,11 @@ final class GWS_Global
 		}
 		else
 		{
-			return User::getById($userid);
+			return GDO_User::getById($userid);
 		}
 	}
 	
-	public static function removeUser(User $user, $reason='NO_REASON')
+	public static function removeUser(GDO_User $user, $reason='NO_REASON')
 	{
 		$key = $user->getID();
 		if (isset(self::$USERS[$key]))
@@ -72,7 +72,7 @@ final class GWS_Global
 	
 	public static function loadUserById($id)
 	{
-		if ($user = User::getByID($id))
+		if ($user = GDO_User::getByID($id))
 		{
 			self::$USERS[$id] = $user;
 		}
@@ -94,24 +94,24 @@ final class GWS_Global
 	#################
 // 	/**
 // 	 * @deprecated
-// 	 * @param User $user
+// 	 * @param GDO_User $user
 // 	 * @param string $command
 // 	 * @param string $payload
 // 	 * @return boolean
 // 	 */
-// 	public static function sendCommand(User $user, $command, $payload)
+// 	public static function sendCommand(GDO_User $user, $command, $payload)
 // 	{
 // 		return self::send($user, "$command:$payload");
 // 	}
 
 // 	/**
 // 	 * @deprecated
-// 	 * @param User $user
+// 	 * @param GDO_User $user
 // 	 * @param string $command
 // 	 * @param array $payload
 // 	 * @return boolean
 // 	 */
-// 	public static function sendJSONCommand(User $user, $command, $payload)
+// 	public static function sendJSONCommand(GDO_User $user, $command, $payload)
 // 	{
 // 		return self::sendCommand($user, $command, json_encode($payload));
 // 	}
@@ -137,7 +137,7 @@ final class GWS_Global
 		return true;
 	}
 	
-	public static function send(User $user, $payload)
+	public static function send(GDO_User $user, $payload)
 	{
 		if ($conn = self::$CONNECTIONS[$user->getID()])
 		{
@@ -147,12 +147,12 @@ final class GWS_Global
 		}
 		else
 		{
-			Logger::logError(sprintf('User %s not connected.', $user->displayName()));
+			Logger::logError(sprintf('GDO_User %s not connected.', $user->displayName()));
 			return false;
 		}
 	}
 	
-	public static function sendBinary(User $user, $payload)
+	public static function sendBinary(GDO_User $user, $payload)
 	{
 		if ($conn = self::$CONNECTIONS[$user->getID()])
 		{
@@ -163,7 +163,7 @@ final class GWS_Global
 		}
 		else
 		{
-			Logger::logWebsocket(sprintf('User %s not connected.', $user->displayName()));
+			Logger::logWebsocket(sprintf('GDO_User %s not connected.', $user->displayName()));
 			return false;
 		}
 	}
@@ -184,7 +184,7 @@ final class GWS_Global
 // 		}
 // 		else
 // 		{
-// 			return User::getByName($name);
+// 			return GDO_User::getByName($name);
 // 		}
 // 	}
 	
@@ -203,7 +203,7 @@ final class GWS_Global
 	##################
 	### Connection ###
 	##################
-	public static function disconnect(User $user, $reason="NO_REASON")
+	public static function disconnect(GDO_User $user, $reason="NO_REASON")
 	{
 		if ($conn = @self::$CONNECTIONS[$user->getID()])
 		{

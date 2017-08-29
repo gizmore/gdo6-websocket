@@ -5,7 +5,7 @@ use GDO\Core\Debug;
 use GDO\Core\ModuleLoader;
 use GDO\DB\Database;
 use GDO\Language\Trans;
-use GDO\User\Session;
+use GDO\User\GDO_Session;
 use GDO\Websocket\Module_Websocket;
 use GDO\Websocket\Server\GWS_Server;
 
@@ -35,9 +35,9 @@ Debug::enableErrorHandler();
 Debug::setDieOnError(false);
 Debug::setMailOnError(GWF_ERROR_MAIL);
 Database::init();
-Session::init(GWF_SESS_NAME, GWF_SESS_DOMAIN, GWF_SESS_TIME, !GWF_SESS_JS, GWF_SESS_HTTPS);
+GDO_Session::init(GWF_SESS_NAME, GWF_SESS_DOMAIN, GWF_SESS_TIME, !GWF_SESS_JS, GWF_SESS_HTTPS);
 ModuleLoader::instance()->loadModulesCache();
-// Session::instance();
+// GDO_Session::instance();
 
 # Create WS
 $gws = Module_Websocket::instance();

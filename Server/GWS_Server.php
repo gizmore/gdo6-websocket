@@ -5,8 +5,8 @@ use GDO\Core\Debug;
 use GDO\Core\Logger;
 use GDO\File\Filewalker;
 use GDO\Net\GDT_IP;
-use GDO\User\Session;
-use GDO\User\User;
+use GDO\User\GDO_Session;
+use GDO\User\GDO_User;
 use GDO\Websocket\Module_Websocket;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
@@ -79,8 +79,8 @@ final class GWS_Server implements MessageComponentInterface
 		if ($from->user())
 		{
 		    GDT_IP::$CURRENT = $from->getRemoteAddress();
-			User::$CURRENT = $from->user();
-			Session::reloadID($from->user()->tempGet('sess_id'));
+			GDO_User::$CURRENT = $from->user();
+			GDO_Session::reloadID($from->user()->tempGet('sess_id'));
 			try
 			{
 				$this->handler->executeMessage($message);
@@ -111,8 +111,8 @@ final class GWS_Server implements MessageComponentInterface
 		else
 		{
 			try {
-			    User::$CURRENT = $from->user();
-// 			    Session::reloadID($from->user()->tempGet('sess_id'));
+			    GDO_User::$CURRENT = $from->user();
+// 			    GDO_Session::reloadID($from->user()->tempGet('sess_id'));
 			    $this->handler->executeMessage($message);
 			}
 			catch (Exception $e) {
@@ -132,11 +132,11 @@ final class GWS_Server implements MessageComponentInterface
 		{
 			$message->replyError(0x0002);
 		}
-		elseif (!Session::reload($cookie))
+		elseif (!GDO_Session::reload($cookie))
 		{
 			$message->replyError(0x0003);
 		}
-		elseif (!($user = User::current()))
+		elseif (!($user = GDO_User::current()))
 		{
 			$message->replyError(0x0004);
 		}
@@ -144,7 +144,7 @@ final class GWS_Server implements MessageComponentInterface
 		{
 			$message->conn()->setUser($user);
 			$conn = $message->conn();
-			$user->tempSet('sess_id', Session::instance()->getID());
+			$user->tempSet('sess_id', GDO_Session::instance()->getID());
 			GWS_Global::addUser($user, $conn);
 			
 			$message->replyText('AUTH', json_encode($user->getVars(['user_name', 'user_guest_name', 'user_id', 'user_credits'])));

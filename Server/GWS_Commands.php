@@ -2,7 +2,7 @@
 namespace GDO\Websocket\Server;
 
 use GDO\Core\GDOError;
-use GDO\User\User;
+use GDO\User\GDO_User;
 
 include 'GWS_Command.php';
 include 'GWS_CommandForm.php';
@@ -76,6 +76,6 @@ class GWS_Commands
 	################
 	public function init() {}
 	public function timer() {}
-	public function connect(User $user) {}
-	public function disconnect(User $user) {}
+	public function connect(GDO_User $user) {}
+	public function disconnect(GDO_User $user) {}
 }

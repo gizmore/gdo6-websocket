@@ -8,7 +8,7 @@ use GDO\Form\GDT_Enum;
 use GDO\Type\GDT_Decimal;
 use GDO\Type\GDT_Int;
 use GDO\Type\GDT_String;
-use GDO\User\User;
+use GDO\User\GDO_User;
 /**
  * GWS_Commands have to register via GWS_Commands::register($code, GWS_Command, $binary=true)
  * @author gizmore
@@ -33,7 +33,7 @@ abstract class GWS_Command
 	############
 	### Util ###
 	############
-	public function userToBinary(User $user)
+	public function userToBinary(GDO_User $user)
 	{
 		$fields = $user->gdoColumnsExcept('user_password', 'user_register_ip');
 		return $this->gdoToBinary($user, array_keys($fields));

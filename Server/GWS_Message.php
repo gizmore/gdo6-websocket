@@ -2,7 +2,7 @@
 namespace GDO\Websocket\Server;
 
 use GDO\Core\Logger;
-use GDO\User\User;
+use GDO\User\GDO_User;
 
 final class GWS_Message
 {
