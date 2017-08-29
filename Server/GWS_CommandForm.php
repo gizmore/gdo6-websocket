@@ -1,8 +1,8 @@
 <?php
 namespace GDO\Websocket\Server;
 
-use GDO\Form\GDO_Form;
-use GDO\Form\GDO_Submit;
+use GDO\Form\GDT_Form;
+use GDO\Form\GDT_Submit;
 use GDO\Form\MethodForm;
 use GDO\Template\Response;
 /**
@@ -33,7 +33,7 @@ abstract class GWS_CommandForm extends GWS_Command
 	    $this->postExecute($msg, $form, $response);
 	}
 	
-	public function postExecute(GWS_Message $msg, GDO_Form $form, Response $response)
+	public function postExecute(GWS_Message $msg, GDT_Form $form, Response $response)
 	{
 		if ($response->isError())
 		{
@@ -45,22 +45,22 @@ abstract class GWS_CommandForm extends GWS_Command
 		}
 	}
 	
-	public function replySuccess(GWS_Message $msg, GDO_Form $form, Response $response)
+	public function replySuccess(GWS_Message $msg, GDT_Form $form, Response $response)
 	{
 		$msg->replyBinary($msg->cmd());
 	}
 	
 	
 	/**
-	 * @param GDO_Form $form
-	 * @return GDO_Submit[]
+	 * @param GDT_Form $form
+	 * @return GDT_Submit[]
 	 */
-	protected function getSubmits(GDO_Form $form)
+	protected function getSubmits(GDT_Form $form)
 	{
 		$submits = [];
 		foreach ($form->getFields() as $field)
 		{
-			if ($field instanceof GDO_Submit)
+			if ($field instanceof GDT_Submit)
 			{
 				$submits[] = $field;
 			}
@@ -68,22 +68,22 @@ abstract class GWS_CommandForm extends GWS_Command
 		return $submits;
 	}
 	
-	protected function removeCaptcha(GDO_Form $form)
+	protected function removeCaptcha(GDT_Form $form)
 	{
 	    $form->removeField('captcha');
 	}
 	
-	protected function removeCSRF(GDO_Form $form)
+	protected function removeCSRF(GDT_Form $form)
 	{
 	    $form->removeField('xsrf');
 	}
 	
-	protected function selectSubmit(GDO_Form $form)
+	protected function selectSubmit(GDT_Form $form)
 	{
 		$this->selectSubmitNum($form, 0);
 	}
 	
-	protected function selectSubmitNum(GDO_Form $form, int $num)
+	protected function selectSubmitNum(GDT_Form $form, int $num)
 	{	
 		$submits = $this->getSubmits($form);
 		if ($submit = @$submits[$num])

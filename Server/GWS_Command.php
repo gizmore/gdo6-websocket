@@ -2,12 +2,12 @@
 namespace GDO\Websocket\Server;
 
 use GDO\DB\GDO;
-use GDO\Date\GDO_Timestamp;
+use GDO\Date\GDT_Timestamp;
 use GDO\Date\Time;
-use GDO\Form\GDO_Enum;
-use GDO\Type\GDO_Decimal;
-use GDO\Type\GDO_Int;
-use GDO\Type\GDO_String;
+use GDO\Form\GDT_Enum;
+use GDO\Type\GDT_Decimal;
+use GDO\Type\GDT_Int;
+use GDO\Type\GDT_String;
 use GDO\User\User;
 /**
  * GWS_Commands have to register via GWS_Commands::register($code, GWS_Command, $binary=true)
@@ -45,29 +45,29 @@ abstract class GWS_Command
 		$payload = '';
 		foreach ($fields as $field)
 		{
-// 			elseif ( ($field instanceof GDO_Password) ||
-// 					 ($field instanceof GDO_IP) )
+// 			elseif ( ($field instanceof GDT_Password) ||
+// 					 ($field instanceof GDT_IP) )
 // 			{
 // 				# skip
 // 			}
-			if ($field instanceof GDO_String)
+			if ($field instanceof GDT_String)
 			{
 				$payload .= GWS_Message::wrS($gdo->getVar($field->name));
 			}
-			elseif ($field instanceof GDO_Decimal)
+			elseif ($field instanceof GDT_Decimal)
 			{
 				$payload .= GWS_Message::wrF($gdo->getVar($field->name));
 			}
-			elseif ($field instanceof GDO_Int)
+			elseif ($field instanceof GDT_Int)
 			{
 			    $payload .= GWS_Message::wrN($field->bytes, $gdo->getVar($field->name));
 			}
-			elseif ($field instanceof GDO_Enum)
+			elseif ($field instanceof GDT_Enum)
 			{
 				$value = array_search($gdo->getVar($field->name), $field->enumValues);
 				$payload .= GWS_Message::wr8($value === false ? 0 : $value + 1);
 			}
-			elseif ($field instanceof GDO_Timestamp)
+			elseif ($field instanceof GDT_Timestamp)
 			{
 			    $time = 0;
 			    if ($date = $gdo->getVar($field->name))

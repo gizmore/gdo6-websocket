@@ -12,8 +12,8 @@ service('GDOWebsocketSrvc', function($q, $rootScope, GDOErrorSrvc, GDOLoadingSrv
 	// Config //
 	////////////
 	WebsocketSrvc.CONFIG = {
-		url: window.GDO_CONFIG.ws_url,
-		autoConnect: window.GDO_CONFIG.ws_autoconnect,
+		url: window.GDT_CONFIG.ws_url,
+		autoConnect: window.GDT_CONFIG.ws_autoconnect,
 		reconnect: true, // @TODO reconnect
 		reconnectTimeout: 10000,
 		keepQueue: true, // @TODO Try to resend queue after reconnect 
@@ -167,12 +167,12 @@ service('GDOWebsocketSrvc', function($q, $rootScope, GDOErrorSrvc, GDOLoadingSrv
 	
 	WebsocketSrvc.authenticate = function() {
 		var w = WebsocketSrvc;
-		return w.sendBinary(GWS_Message().cmd(0x0001).sync().writeString(window.GDO_CONFIG.ws_secret)).then(w.authenticated, w.authFailure);
+		return w.sendBinary(GWS_Message().cmd(0x0001).sync().writeString(window.GDT_CONFIG.ws_secret)).then(w.authenticated, w.authFailure);
 	};
 
 	WebsocketSrvc.authenticated = function(payload) {
 //		console.log('WebsocketSrvc.authenticated()', payload);
-		window.GDO_USER.update(JSON.parse(payload));
+		window.GDT_USER.update(JSON.parse(payload));
 	};
 
 	WebsocketSrvc.authFailure = function(error) {

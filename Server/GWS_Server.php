@@ -4,7 +4,7 @@ use GDO\Core\Application;
 use GDO\Core\Debug;
 use GDO\Core\Logger;
 use GDO\File\Filewalker;
-use GDO\Net\GDO_IP;
+use GDO\Net\GDT_IP;
 use GDO\User\Session;
 use GDO\User\User;
 use GDO\Websocket\Module_Websocket;
@@ -78,7 +78,7 @@ final class GWS_Server implements MessageComponentInterface
 		$message->readTextCmd();
 		if ($from->user())
 		{
-		    GDO_IP::$CURRENT = $from->getRemoteAddress();
+		    GDT_IP::$CURRENT = $from->getRemoteAddress();
 			User::$CURRENT = $from->user();
 			Session::reloadID($from->user()->tempGet('sess_id'));
 			try
@@ -100,7 +100,7 @@ final class GWS_Server implements MessageComponentInterface
 	public function onBinaryMessage(ConnectionInterface $from, $data)
 	{
 		printf("%s >> BIN\n", $from->user() ? $from->user()->displayNameLabel() : '???');
-		GDO_IP::$CURRENT = $from->getRemoteAddress();
+		GDT_IP::$CURRENT = $from->getRemoteAddress();
 		echo GWS_Message::hexdump($data);
 		$message = new GWS_Message($data, $from);
 		$message->readCmd();

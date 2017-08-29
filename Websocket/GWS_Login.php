@@ -1,7 +1,7 @@
 <?php
 namespace GDO\Websocket\Websocket;
 
-use GDO\Form\GDO_Form;
+use GDO\Form\GDT_Form;
 use GDO\Template\Response;
 use GDO\User\Session;
 use GDO\User\User;
@@ -13,7 +13,7 @@ final class GWS_Login extends GWS_CommandForm
 {
 	public function getMethod() { return method('Login', 'Form'); }
 	
-	public function replySuccess(GWS_Message $msg, GDO_Form $form, Response $response)
+	public function replySuccess(GWS_Message $msg, GDT_Form $form, Response $response)
 	{
 		User::$CURRENT = $user = Session::instance()->getUser();
 		Session::reset();

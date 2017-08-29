@@ -1,21 +1,21 @@
 <?php
 namespace GDO\Websocket\Server;
 
-use GDO\DB\GDO_Object;
-use GDO\Form\GDO_Form;
+use GDO\DB\GDT_Object;
+use GDO\Form\GDT_Form;
 use GDO\Form\MethodForm;
-use GDO\Type\GDO_Decimal;
-use GDO\Type\GDO_Int;
-use GDO\Type\GDO_String;
-use GDO\Type\GDO_Checkbox;
+use GDO\Type\GDT_Decimal;
+use GDO\Type\GDT_Int;
+use GDO\Type\GDT_String;
+use GDO\Type\GDT_Checkbox;
 /**
- * Fill a GDO_Form with a GWS_Message.
+ * Fill a GDT_Form with a GWS_Message.
  * 
  * @author gizmore
  * @since 5.0
  * 
- * @see GDO_Base;
- * @see GDO_Form
+ * @see GDT_Base;
+ * @see GDT_Form
  * @see GWS_Message
  */
 final class GWS_Form
@@ -25,27 +25,27 @@ final class GWS_Form
 		return self::bind($method->getForm(), $msg);
 	}
 	
-	public static function bind(GDO_Form $form, GWS_Message $msg)
+	public static function bind(GDT_Form $form, GWS_Message $msg)
 	{
 		foreach ($form->getFields() as $gdoType)
 		{
-			if ($gdoType instanceof GDO_String)
+			if ($gdoType instanceof GDT_String)
 			{
 				$gdoType->setGDOValue($msg->readString());
 			}
-			elseif ($gdoType instanceof GDO_Decimal)
+			elseif ($gdoType instanceof GDT_Decimal)
 			{
 				$gdoType->setGDOValue($msg->readFloat());
 			}
-			elseif ($gdoType instanceof GDO_Checkbox)
+			elseif ($gdoType instanceof GDT_Checkbox)
 			{
 			    $gdoType->setGDOValue($msg->read8() > 0);
 			}
-		    elseif ($gdoType instanceof GDO_Int)
+		    elseif ($gdoType instanceof GDT_Int)
 			{
 				$gdoType->setGDOValue($msg->readN($gdoType->bytes, $gdoType->signed()));
 			}
-			elseif ($gdoType instanceof GDO_Object)
+			elseif ($gdoType instanceof GDT_Object)
 			{
 			    $gdoType->value($msg->read32u());
 			}

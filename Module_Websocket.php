@@ -2,12 +2,12 @@
 namespace GDO\Websocket;
 
 use GDO\Core\Module;
-use GDO\Date\GDO_Duration;
-use GDO\File\GDO_Path;
-use GDO\Net\GDO_Url;
-use GDO\Template\GDO_Bar;
-use GDO\Type\GDO_Checkbox;
-use GDO\Type\GDO_Int;
+use GDO\Date\GDT_Duration;
+use GDO\File\GDT_Path;
+use GDO\Net\GDT_Url;
+use GDO\Template\GDT_Bar;
+use GDO\Type\GDT_Checkbox;
+use GDO\Type\GDT_Int;
 use GDO\User\Session;
 use GDO\Util\Javascript;
 use GDO\Util\Strings;
@@ -33,12 +33,12 @@ final class Module_Websocket extends Module
 	public function getConfig()
 	{
 		return array(
-			GDO_Checkbox::make('ws_autoconnect')->initial('0'),
-			GDO_Checkbox::make('ws_guests')->initial('1'),
-			GDO_Int::make('ws_port')->bytes(2)->unsigned()->initial('61221'),
-			GDO_Duration::make('ws_timer')->initial('0'),
-			GDO_Path::make('ws_processor')->initial($this->defaultProcessorPath())->existingFile(),
-			GDO_Url::make('ws_url')->initial('ws://'.GDO_Url::host().':61221')->pattern('#^wss?://.*#'),
+			GDT_Checkbox::make('ws_autoconnect')->initial('0'),
+			GDT_Checkbox::make('ws_guests')->initial('1'),
+			GDT_Int::make('ws_port')->bytes(2)->unsigned()->initial('61221'),
+			GDT_Duration::make('ws_timer')->initial('0'),
+			GDT_Path::make('ws_processor')->initial($this->defaultProcessorPath())->existingFile(),
+			GDT_Url::make('ws_url')->initial('ws://'.GDT_Url::host().':61221')->pattern('#^wss?://.*#'),
 		);
 	}
 	public function cfgAutoConnect() { return $this->getConfigValue('ws_autoconnect'); }
@@ -69,9 +69,9 @@ final class Module_Websocket extends Module
 	
 	private function configJS()
 	{
-		return sprintf('window.GDO_CONFIG.ws_url = "%s";
-window.GDO_CONFIG.ws_secret = "%s";
-window.GDO_CONFIG.ws_autoconnect = %s;',
+		return sprintf('window.GDT_CONFIG.ws_url = "%s";
+window.GDT_CONFIG.ws_secret = "%s";
+window.GDT_CONFIG.ws_autoconnect = %s;',
 				$this->cfgUrl(), $this->secret(), $this->cfgAutoConnect()?'1':'0');
 	}
 	
@@ -84,7 +84,7 @@ window.GDO_CONFIG.ws_autoconnect = %s;',
 	##############
 	### Navbar ###
 	##############
-	public function hookLeftBar(GDO_Bar $navbar)
+	public function hookLeftBar(GDT_Bar $navbar)
 	{
 		$this->templatePHP('leftbar.php', ['navbar' => $navbar]);
 	}
