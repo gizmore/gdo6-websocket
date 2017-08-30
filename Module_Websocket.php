@@ -61,17 +61,20 @@ final class Module_Websocket extends GDO_Module
 	##########
 	public function onIncludeScripts()
 	{
-		$this->addJavascript('js/gwf-websocket-srvc.js');
-		$this->addJavascript('js/gwf-ws-navbar-ctrl.js');
+	    if (module_enabled('GWFAngular'))
+	    {
+    		$this->addJavascript('js/gwf-websocket-srvc.js');
+    		$this->addJavascript('js/gwf-ws-navbar-ctrl.js');
+	    }
 		$this->addJavascript('js/gws-message.js');
 		Javascript::addJavascriptInline($this->configJS());
 	}
 	
 	private function configJS()
 	{
-		return sprintf('window.GDT_CONFIG.ws_url = "%s";
-window.GDT_CONFIG.ws_secret = "%s";
-window.GDT_CONFIG.ws_autoconnect = %s;',
+		return sprintf('window.GDO_CONFIG.ws_url = "%s";
+window.GDO_CONFIG.ws_secret = "%s";
+window.GDO_CONFIG.ws_autoconnect = %s;',
 				$this->cfgUrl(), $this->secret(), $this->cfgAutoConnect()?'1':'0');
 	}
 	
