@@ -20,7 +20,7 @@ abstract class GWS_Command
 	public function setMessage(GWS_Message $message) { $this->message = $message; return $this; }
 	
 	/**
-	 * @return User
+	 * @return GDO_User
 	 */
 	public function user() { return $this->message->user(); }
 	public function message() { return $this->message; }

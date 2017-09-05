@@ -22,7 +22,7 @@ final class GWS_Message
 	public function ip() { return $this->from->getRemoteAddress(); }
 	public function cmd() { return $this->command; }
 	/**
-	 * @return User
+	 * @return GDO_User
 	 */
 	public function user() { return $this->from->user(); }
 	public function index($index=-1) { $this->index = $index < 0 ? $this->index : $index; return $this->index; }

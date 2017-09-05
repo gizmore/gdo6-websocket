@@ -54,7 +54,7 @@ final class GWS_Global
 	
 	/**
 	 * @param int $id
-	 * @return User
+	 * @return GDO_User
 	 */
 	public static function getUserByID($id)
 	{
