@@ -72,7 +72,7 @@ final class GWS_Global
 	
 	public static function loadUserById($id)
 	{
-		if ($user = GDO_User::getByID($id))
+		if ($user = GDO_User::getById($id))
 		{
 			self::$USERS[$id] = $user;
 		}
