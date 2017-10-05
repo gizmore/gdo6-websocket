@@ -5,8 +5,10 @@ use GDO\DB\GDO;
 use GDO\Date\GDT_Timestamp;
 use GDO\Date\Time;
 use GDO\Form\GDT_Enum;
+use GDO\Net\GDT_IP;
 use GDO\Type\GDT_Decimal;
 use GDO\Type\GDT_Int;
+use GDO\Type\GDT_Password;
 use GDO\Type\GDT_String;
 use GDO\User\GDO_User;
 /**
@@ -45,12 +47,12 @@ abstract class GWS_Command
 		$payload = '';
 		foreach ($fields as $field)
 		{
-// 			elseif ( ($field instanceof GDT_Password) ||
-// 					 ($field instanceof GDT_IP) )
-// 			{
-// 				# skip
-// 			}
-			if ($field instanceof GDT_String)
+			if ( ($field instanceof GDT_Password) ||
+			     ($field instanceof GDT_IP) )
+			{
+				# skip
+			}
+			elseif ($field instanceof GDT_String)
 			{
 				$payload .= GWS_Message::wrS($gdo->getVar($field->name));
 			}
