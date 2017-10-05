@@ -188,7 +188,7 @@ final class GWS_Server implements MessageComponentInterface
 	
 	private function registerCommands()
 	{
-		foreach (ModuleLoader::instance()->getActiveModules() as $module)
+		foreach (ModuleLoader::instance()->getModules() as $module)
 		{
 			Filewalker::traverse($module->filePath('Websocket'), [$this, 'registerModuleCommands']);
 		}
