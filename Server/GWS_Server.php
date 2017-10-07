@@ -194,7 +194,7 @@ final class GWS_Server implements MessageComponentInterface
 		}
 	}
 	
-	public function registerModuleCommands(string $entry, string $path)
+	public function registerModuleCommands($entry, $path)
 	{
 		include $path;
 	}

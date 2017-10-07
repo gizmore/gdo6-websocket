@@ -26,7 +26,7 @@ class GWS_Commands
 	 * @var GWS_Command[]
 	 */
 	public static $COMMANDS = array();
-	public static function register(int $code, GWS_Command $command, $binary=true)
+	public static function register($code, GWS_Command $command, $binary=true)
 	{
 		if (isset(self::$COMMANDS[$code]))
 		{

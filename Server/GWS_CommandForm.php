@@ -4,7 +4,7 @@ namespace GDO\Websocket\Server;
 use GDO\Form\GDT_Form;
 use GDO\Form\GDT_Submit;
 use GDO\Form\MethodForm;
-use GDO\Template\Response;
+use GDO\Core\GDT_Response;
 /**
  * Call MethodForm via websockets.
  * @author gizmore
@@ -33,7 +33,7 @@ abstract class GWS_CommandForm extends GWS_Command
 	    $this->postExecute($msg, $form, $response);
 	}
 	
-	public function postExecute(GWS_Message $msg, GDT_Form $form, Response $response)
+	public function postExecute(GWS_Message $msg, GDT_Form $form, GDT_Response $response)
 	{
 		if ($response->isError())
 		{
@@ -45,7 +45,7 @@ abstract class GWS_CommandForm extends GWS_Command
 		}
 	}
 	
-	public function replySuccess(GWS_Message $msg, GDT_Form $form, Response $response)
+	public function replySuccess(GWS_Message $msg, GDT_Form $form, GDT_Response $response)
 	{
 		$msg->replyBinary($msg->cmd());
 	}
@@ -83,7 +83,7 @@ abstract class GWS_CommandForm extends GWS_Command
 		$this->selectSubmitNum($form, 0);
 	}
 	
-	protected function selectSubmitNum(GDT_Form $form, int $num)
+	protected function selectSubmitNum(GDT_Form $form, $num)
 	{	
 		$submits = $this->getSubmits($form);
 		if ($submit = @$submits[$num])

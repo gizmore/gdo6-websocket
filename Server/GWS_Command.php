@@ -4,12 +4,12 @@ namespace GDO\Websocket\Server;
 use GDO\Core\GDO;
 use GDO\Date\GDT_Timestamp;
 use GDO\Date\Time;
-use GDO\Form\GDT_Enum;
+use GDO\DB\GDT_Enum;
 use GDO\Net\GDT_IP;
-use GDO\Type\GDT_Decimal;
-use GDO\Type\GDT_Int;
-use GDO\Type\GDT_Password;
-use GDO\Type\GDT_String;
+use GDO\DB\GDT_Decimal;
+use GDO\DB\GDT_Int;
+use GDO\User\GDT_Password;
+use GDO\DB\GDT_String;
 use GDO\User\GDO_User;
 /**
  * GWS_Commands have to register via GWS_Commands::register($code, GWS_Command, $binary=true)

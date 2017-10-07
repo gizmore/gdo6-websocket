@@ -1,7 +1,7 @@
 <?php
 namespace GDO\Websocket\Server;
 use GDO\Core\Method;
-use GDO\Template\Response;
+use GDO\Core\GDT_Response;
 
 /**
  * Call Method via websockets.
@@ -28,7 +28,7 @@ abstract class GWS_CommandMethod extends GWS_Command
 	    $this->postExecute($msg, $response);
 	}
 	
-	public function postExecute(GWS_Message $msg, Response $response)
+	public function postExecute(GWS_Message $msg, GDT_Response $response)
 	{
 		if ($response->isError())
 		{
@@ -40,7 +40,7 @@ abstract class GWS_CommandMethod extends GWS_Command
 		}
 	}
 	
-	public function replySuccess(GWS_Message $msg, Response $response)
+	public function replySuccess(GWS_Message $msg, GDT_Response $response)
 	{
 		$msg->replyBinary($msg->cmd());
 	}

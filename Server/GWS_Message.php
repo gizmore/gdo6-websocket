@@ -45,7 +45,7 @@ final class GWS_Message
 	 * @param string $data binary payload
 	 * @return boolean
 	 */
-	public function replyBinary(int $command, string $data='')
+	public function replyBinary($command, $data='')
 	{
 		Logger::logWebsocket(sprintf("%s << BIN", $this->user() ? $this->user()->displayName() : '???'));
 		$command |= $this->mid > 0 ? 0x8000 : 0; # Set LSB to mark MID reply sync msg mode.

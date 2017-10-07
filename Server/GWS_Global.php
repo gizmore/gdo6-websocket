@@ -22,7 +22,7 @@ final class GWS_Global
 		self::$CONNECTIONS[$user->getID()] = $conn;
 	}
 	
-	public static function recacheUser(string $userid)
+	public static function recacheUser($userid)
 	{
 		GDO_User::table()->cache->uncacheID($userid);
 

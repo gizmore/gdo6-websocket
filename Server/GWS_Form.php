@@ -4,17 +4,17 @@ namespace GDO\Websocket\Server;
 use GDO\DB\GDT_Object;
 use GDO\Form\GDT_Form;
 use GDO\Form\MethodForm;
-use GDO\Type\GDT_Decimal;
-use GDO\Type\GDT_Int;
-use GDO\Type\GDT_String;
-use GDO\Type\GDT_Checkbox;
+use GDO\DB\GDT_Decimal;
+use GDO\DB\GDT_Int;
+use GDO\DB\GDT_String;
+use GDO\DB\GDT_Checkbox;
 /**
  * Fill a GDT_Form with a GWS_Message.
  * 
  * @author gizmore
  * @since 5.0
  * 
- * @see GDT_Base;
+ * @see GDT;
  * @see GDT_Form
  * @see GWS_Message
  */

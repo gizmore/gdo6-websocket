@@ -2,7 +2,7 @@
 namespace GDO\Websocket\Websocket;
 
 use GDO\Form\GDT_Form;
-use GDO\Template\Response;
+use GDO\Core\GDT_Response;
 use GDO\User\GDO_Session;
 use GDO\User\GDO_User;
 use GDO\Websocket\Server\GWS_CommandForm;
@@ -13,7 +13,7 @@ final class GWS_AsGuest extends GWS_CommandForm
 {
 	public function getMethod() { return method('Register', 'Guest'); }
 
-	public function replySuccess(GWS_Message $msg, GDT_Form $form, Response $response)
+	public function replySuccess(GWS_Message $msg, GDT_Form $form, GDT_Response $response)
 	{
 		GDO_User::$CURRENT = $user = GDO_Session::instance()->getUser();
 		GDO_Session::reset();
