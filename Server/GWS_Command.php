@@ -1,7 +1,7 @@
 <?php
 namespace GDO\Websocket\Server;
 
-use GDO\DB\GDO;
+use GDO\Core\GDO;
 use GDO\Date\GDT_Timestamp;
 use GDO\Date\Time;
 use GDO\Form\GDT_Enum;

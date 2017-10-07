@@ -2,7 +2,7 @@
 namespace GDO\Websocket\Websocket;
 
 use GDO\Core\ModuleLoader;
-use GDO\DB\GDO;
+use GDO\Core\GDO;
 use GDO\Websocket\Server\GWS_Command;
 use GDO\Websocket\Server\GWS_Commands;
 use GDO\Websocket\Server\GWS_Message;
