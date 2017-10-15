@@ -61,7 +61,7 @@ final class Module_Websocket extends GDO_Module
 	##########
 	public function onIncludeScripts()
 	{
-	    if (module_enabled('GWFAngular'))
+	    if (module_enabled('Angular'))
 	    {
     		$this->addJavascript('js/gwf-websocket-srvc.js');
     		$this->addJavascript('js/gwf-ws-navbar-ctrl.js');
