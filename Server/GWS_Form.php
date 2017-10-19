@@ -29,17 +29,18 @@ final class GWS_Form
 	{
 		foreach ($form->getFields() as $gdoType)
 		{
-			if ($gdoType instanceof GDT_String)
+			echo "trying {$gdoType->name}...\n";
+			if ($gdoType instanceof GDT_Checkbox)
+			{
+				$gdoType->setGDOValue($msg->read8() > 0);
+			}
+			elseif ($gdoType instanceof GDT_String)
 			{
 				$gdoType->setGDOValue($msg->readString());
 			}
 			elseif ($gdoType instanceof GDT_Decimal)
 			{
 				$gdoType->setGDOValue($msg->readFloat());
-			}
-			elseif ($gdoType instanceof GDT_Checkbox)
-			{
-			    $gdoType->setGDOValue($msg->read8() > 0);
 			}
 		    elseif ($gdoType instanceof GDT_Int)
 			{
@@ -49,6 +50,12 @@ final class GWS_Form
 			{
 			    $gdoType->value($msg->read32u());
 			}
+			else
+			{
+				echo "skipped {$gdoType->name}...\n";
+				continue;
+			}
+			echo "filled {$gdoType->name}...\n";
 		}
 		return $form;
 	}

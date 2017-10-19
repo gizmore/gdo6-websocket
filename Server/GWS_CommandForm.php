@@ -37,7 +37,7 @@ abstract class GWS_CommandForm extends GWS_Command
 	{
 		if ($response->isError())
 		{
-			$msg->replyErrorMessage($msg->cmd(), json_encode($response->getHTML()));
+			$msg->replyErrorMessage($msg->cmd(), $response->displayJSON());
 		}
 		else
 		{
