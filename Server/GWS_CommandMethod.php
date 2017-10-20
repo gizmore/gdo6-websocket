@@ -32,7 +32,8 @@ abstract class GWS_CommandMethod extends GWS_Command
 	{
 		if ($response->isError())
 		{
-			$msg->replyErrorMessage($msg->cmd(), json_encode($response->getHTML()));
+			var_dump($response->fields);
+			$msg->replyErrorMessage($msg->cmd(), json_encode($response->displayJSON()));
 		}
 		else
 		{

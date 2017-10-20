@@ -29,9 +29,6 @@ abstract class GWS_CommandForm extends GWS_Command
 	    $this->selectSubmit($form);
 	    $this->removeCSRF($form);
 	    $this->removeCaptcha($form);
-	    
-	    var_dump($form);
-	    
 	    $response = $method->exec();
 	    $this->postExecute($msg, $form, $response);
 	}
@@ -40,6 +37,7 @@ abstract class GWS_CommandForm extends GWS_Command
 	{
 		if ($response->isError())
 		{
+			echo print_r($response->displayJSON(), 1);
 			$msg->replyErrorMessage($msg->cmd(), $response->displayJSON());
 		}
 		else

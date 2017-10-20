@@ -32,23 +32,23 @@ final class GWS_Form
 			echo "trying {$gdoType->name}...\n";
 			if ($gdoType instanceof GDT_Checkbox)
 			{
-				$gdoType->setGDOValue($msg->read8() > 0);
+				$gdoType->value($msg->read8() > 0);
 			}
 			elseif ($gdoType instanceof GDT_String)
 			{
-				$gdoType->setGDOValue($msg->readString());
+				$gdoType->value($msg->readString());
 			}
 			elseif ($gdoType instanceof GDT_Decimal)
 			{
-				$gdoType->setGDOValue($msg->readFloat());
+				$gdoType->value($msg->readFloat());
 			}
 		    elseif ($gdoType instanceof GDT_Int)
 			{
-				$gdoType->setGDOValue($msg->readN($gdoType->bytes, $gdoType->signed()));
+				$gdoType->value($msg->readN($gdoType->bytes, $gdoType->signed()));
 			}
 			elseif ($gdoType instanceof GDT_Object)
 			{
-			    $gdoType->value($msg->read32u());
+			    $gdoType->val($msg->read32u());
 			}
 			else
 			{
