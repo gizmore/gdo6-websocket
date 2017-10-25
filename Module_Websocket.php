@@ -89,6 +89,9 @@ window.GDO_CONFIG.ws_autoconnect = %s;',
 	##############
 	public function hookLeftBar(GDT_Bar $navbar)
 	{
-		$this->templatePHP('leftbar.php', ['navbar' => $navbar]);
+		if (module_enabled('Angular'))
+		{
+			$this->templatePHP('leftbar.php', ['navbar' => $navbar]);
+		}
 	}
 }
