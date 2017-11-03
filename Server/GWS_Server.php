@@ -32,10 +32,14 @@ final class GWS_Server implements MessageComponentInterface
 	
 	public function __construct()
 	{
-	    if ($this->ipc)
-	    {
-	        msg_remove_queue($this->ipc);
-	    }
+		if (GWF_IPC)
+		{
+			for ($i = 1; $i < GWF_IPC; $i++)
+			{
+				msg_remove_queue(msg_get_queue($i));
+			}
+			$this->ipc = msg_get_queue(GWF_IPC);
+		}
 	}
 	
 	public function mainloop($timerInterval=0)
@@ -47,7 +51,6 @@ final class GWS_Server implements MessageComponentInterface
 		}
 		if (GWF_IPC)
 		{
-		    $this->ipc = msg_get_queue(1);
 		    $this->server->loop->addPeriodicTimer(0.250, [$this, 'ipcTimer']);
 		}
 		$this->server->run();
@@ -56,10 +59,15 @@ final class GWS_Server implements MessageComponentInterface
 	public function ipcTimer()
 	{
 	    $message = null; $messageType = 0;
-	    msg_receive($this->ipc, 1, $messageType, 1000000, $message, true, MSG_IPC_NOWAIT);
+	    msg_receive($this->ipc, GWF_IPC, $messageType, 1000000, $message, true, MSG_IPC_NOWAIT);
 	    if ($message)
 	    {
-	        GWS_Commands::webHook($message);
+	    	try {
+		        GWS_Commands::webHook($message);
+	    	} catch (\Exception $e) {
+	    		Logger::logException($ex);
+	    	}
+	        $this->ipcTimer();
 	    }
 	}
 	

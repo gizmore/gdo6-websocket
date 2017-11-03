@@ -48,11 +48,11 @@ final class GWS_Form
 	{
 		foreach ($fields as $gdoType)
 		{
-			self::bind($gdoType);
+			self::bind($gdoType, $msg);
 		}
 	}
 	
-	private static function bind(GDT $gdoType)
+	private static function bind(GDT $gdoType, GWS_Message $msg)
 	{
 		if ($gdoType instanceof GDT_Checkbox)
 		{
@@ -68,7 +68,7 @@ final class GWS_Form
 		}
 		elseif ($gdoType instanceof GDT_Int)
 		{
-			$gdoType->value($msg->readN($gdoType->bytes, $gdoType->signed()));
+			$gdoType->value($msg->readN($gdoType->bytes, !$gdoType->unsigned));
 		}
 		elseif ($gdoType instanceof GDT_Object)
 		{

@@ -48,7 +48,12 @@ abstract class GWS_CommandForm extends GWS_Command
 	
 	public function replySuccess(GWS_Message $msg, GDT_Form $form, GDT_Response $response)
 	{
-		$msg->replyBinary($msg->cmd());
+		$msg->replyBinary($msg->cmd(), $this->payloadFromResponse($response));
+	}
+	
+	private function payloadFromResponse(GDT_Response $response)
+	{
+		return '';
 	}
 	
 	

@@ -63,7 +63,7 @@ final class GWS_Message
 
 	public function replyErrorMessage($code, $message)
 	{
-		$message = $message['error'];
+// 		$message = $message['error'];
 		Logger::logWebsocket(sprintf('%s: ERROR - %s', ($this->user() ? $this->user()->displayNameLabel() : '???'), $message));
 		return $this->replyBinary(0x0000, $this->write16($code).$this->writeString($message));
 	}
