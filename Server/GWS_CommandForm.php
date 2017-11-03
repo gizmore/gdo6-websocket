@@ -25,7 +25,7 @@ abstract class GWS_CommandForm extends GWS_Command
 	    $_POST = []; $_REQUEST = []; $_FILES = [];
 	    $method = $this->getMethod();
 	    $this->fillRequestVars($msg);
-	    $form = GWS_Form::bindMethod($method, $msg);
+	    $form = GWS_Form::bindMethodForm($method, $msg);
 	    $this->selectSubmit($form);
 	    $this->removeCSRF($form);
 	    $this->removeCaptcha($form);

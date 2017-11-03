@@ -4,10 +4,12 @@ use GDO\Core\Method;
 use GDO\Core\GDT_Response;
 
 /**
- * Call Method via websockets.
+ * Call GDO Method via websockets.
+ * Either override fillRequestVars or gdoParameters in your derrived @link Method
+ * 
  * @author gizmore
  * @since 5.0
- * @version 5.0
+ * @version 6.07
  */
 abstract class GWS_CommandMethod extends GWS_Command
 {
@@ -16,7 +18,10 @@ abstract class GWS_CommandMethod extends GWS_Command
 	 */
 	public abstract function getMethod();
 	
-	public abstract function fillRequestVars(GWS_Message $msg);
+	public function fillRequestVars(GWS_Message $msg)
+	{
+		GWS_Form::bindMethod($this->getMethod(), $msg);
+	}
 	
 	public function execute(GWS_Message $msg)
 	{
@@ -32,7 +37,6 @@ abstract class GWS_CommandMethod extends GWS_Command
 	{
 		if ($response->isError())
 		{
-			var_dump($response->fields);
 			$msg->replyErrorMessage($msg->cmd(), json_encode($response->displayJSON()));
 		}
 		else
