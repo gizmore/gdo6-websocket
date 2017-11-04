@@ -29,7 +29,7 @@ class WebsocketApplication extends Application
 }
 $app = new WebsocketApplication();
 Trans::$ISO = GWF_LANGUAGE;
-Logger::init(null, GWF_ERROR_LEVEL); # 1st init as guest
+Logger::init(null, Logger::_ALL&~Logger::BUFFERED); # 1st init as guest
 Debug::init();
 Debug::enableErrorHandler();
 Debug::setDieOnError(false);

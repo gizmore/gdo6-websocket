@@ -5,6 +5,11 @@ use GDO\Form\GDT_Form;
 use GDO\Form\GDT_Submit;
 use GDO\Form\MethodForm;
 use GDO\Core\GDT_Response;
+use GDO\DB\GDT_String;
+use GDO\DB\GDT_Int;
+use GDO\Core\GDT_JSON;
+use GDO\Core\GDT_JSONResponse;
+use GDO\Core\GDT;
 /**
  * Call MethodForm via websockets.
  * @author gizmore
@@ -53,10 +58,35 @@ abstract class GWS_CommandForm extends GWS_Command
 	
 	private function payloadFromResponse(GDT_Response $response)
 	{
-		return '';
+		$payload = '';
+		foreach ($response->getFields() as $gdoType)
+		{
+			$payload .= $this->payloadFromField($gdoType);
+		}
+		return $payload;
 	}
 	
-	
+	private function payloadFromField(GDT $gdoType)
+	{
+		$payload = '';
+		if ($gdoType instanceof GDT_JSONResponse)
+		{
+			foreach ($gdoType->getFields() as $gdoType)
+			{
+				$payload .= $this->payloadFromField($gdoType);
+			}
+		}
+		elseif ($gdoType instanceof GDT_String)
+		{
+			$payload .= GWS_Message::wrS($gdoType->getVar());
+		}
+		elseif ($gdoType instanceof GDT_Int)
+		{
+			$payload .= GWS_Message::wrN($gdoType->bytes, $gdoType->getValue());
+		}
+		return $payload;
+	}
+
 	/**
 	 * @param GDT_Form $form
 	 * @return GDT_Submit[]

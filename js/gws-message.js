@@ -33,6 +33,7 @@ function GWS_Message(buffer) {
 	////////////
 	// Reader //
 	////////////
+	this.hasMore = function() { return this.INDEX < this.LENGTH; };
 	this.read8 = function(index) { return this.readN(1, index); };
 	this.read16 = function(index) { return this.readN(2, index); };
 	this.read24 = function(index) { return this.readN(3, index); };
