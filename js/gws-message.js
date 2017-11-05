@@ -55,7 +55,6 @@ function GWS_Message(buffer) {
 		while (code = this.read8()) {
 			back += String.fromCharCode(code);
 		}
-		this.INDEX++;
 		return decodeURIComponent(back);
 	};
 	this.readFloat = function(index) {  var f = this.BUFFER.getFloat32(this.index(index), true); this.INDEX += 4; return f; };
