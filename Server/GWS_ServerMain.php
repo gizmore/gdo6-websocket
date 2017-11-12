@@ -47,6 +47,9 @@ include $gws->cfgWebsocketProcessorPath();
 $processor = $gws->processorClass();
 
 $server = new GWS_Server();
-$server->ipcTimer();
+if (GWF_IPC)
+{
+	$server->ipcTimer();
+}
 $server->initGWSServer(new $processor(), $gws);
 $server->mainloop($gws->cfgTimer());
