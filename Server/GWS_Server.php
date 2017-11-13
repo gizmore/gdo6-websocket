@@ -1,6 +1,5 @@
 <?php
 namespace GDO\Websocket\Server;
-use GDO\Core\Application;
 use GDO\Core\Debug;
 use GDO\Core\Logger;
 use GDO\File\Filewalker;
@@ -120,7 +119,7 @@ final class GWS_Server implements MessageComponentInterface
 		{
 			try {
 			    GDO_User::$CURRENT = $from->user();
-// 			    GDO_Session::reloadID($from->user()->tempGet('sess_id'));
+			    GDO_Session::reloadID($from->user()->tempGet('sess_id'));
 			    $this->handler->executeMessage($message);
 			}
 			catch (Exception $e) {
