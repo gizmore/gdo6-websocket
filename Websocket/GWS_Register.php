@@ -6,6 +6,7 @@ use GDO\Core\GDT_Response;
 use GDO\Websocket\Server\GWS_CommandForm;
 use GDO\Websocket\Server\GWS_Commands;
 use GDO\Websocket\Server\GWS_Message;
+use GDO\User\GDO_User;
 
 final class GWS_Register extends GWS_CommandForm
 {
@@ -16,7 +17,7 @@ final class GWS_Register extends GWS_CommandForm
 	
 	public function replySuccess(GWS_Message $msg, GDT_Form $form, GDT_Response $response)
 	{
-		$msg->replyBinary($msg->cmd());
+		$msg->replyBinary($msg->cmd(), $this->userToBinary(GDO_User::current()));
 	}
 }
 
