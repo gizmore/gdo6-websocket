@@ -8,14 +8,18 @@ use GDO\User\GDO_User;
 use GDO\Websocket\Server\GWS_CommandForm;
 use GDO\Websocket\Server\GWS_Commands;
 use GDO\Websocket\Server\GWS_Message;
+use GDO\Websocket\Server\GWS_Global;
+use GDO\Login\Method\Form;
 
 final class GWS_Login extends GWS_CommandForm
 {
-	public function getMethod() { return method('Login', 'Form'); }
+	public function getMethod() { return Form::make(); }
 	
 	public function replySuccess(GWS_Message $msg, GDT_Form $form, GDT_Response $response)
 	{
 		GDO_User::$CURRENT = $user = GDO_Session::instance()->getUser();
+		$msg->conn()->setUser(GDO_User::current());
+		GWS_Global::addUser($user, $msg->conn());
 		GDO_Session::reset();
 		$msg->replyBinary($msg->cmd(), $this->userToBinary($user));
 	}

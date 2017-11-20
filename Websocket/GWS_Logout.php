@@ -5,6 +5,7 @@ use GDO\User\GDO_Session;
 use GDO\User\GDO_User;
 use GDO\Websocket\Server\GWS_Command;
 use GDO\Websocket\Server\GWS_Commands;
+use GDO\Websocket\Server\GWS_Global;
 use GDO\Websocket\Server\GWS_Message;
 use GDO\Login\Method\Logout;
 
@@ -12,6 +13,7 @@ final class GWS_Logout extends GWS_Command
 {
     public function execute(GWS_Message $msg)
     {
+    	GWS_Global::removeUser($msg->user());
     	Logout::make()->execute();
 //         GDO_Session::reset();
     	$user = GDO_User::$CURRENT;
