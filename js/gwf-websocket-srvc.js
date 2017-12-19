@@ -122,8 +122,9 @@ service('GDOWebsocketSrvc', function($q, $rootScope, GDOErrorSrvc, GDOLoadingSrv
 		if (mid > 0) {
 			if (WebsocketSrvc.SYNC_MSGS[mid]) {
 				if (error) {
-					GDOErrorSrvc.showError(sprintf('Code %04X: %s', error, gwsMessage.readString()), 'Protocol error');
-					WebsocketSrvc.SYNC_MSGS[mid].reject(error);
+					var key = gwsMessage.readString();
+					GDOErrorSrvc.showError(sprintf('Code %04X: %s', error, key), 'Protocol error');
+					WebsocketSrvc.SYNC_MSGS[mid].reject({code: error, key: key});
 				}
 				else {
 					WebsocketSrvc.SYNC_MSGS[mid].resolve(gwsMessage);
