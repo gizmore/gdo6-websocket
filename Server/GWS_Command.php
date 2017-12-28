@@ -11,6 +11,7 @@ use GDO\DB\GDT_Int;
 use GDO\User\GDT_Password;
 use GDO\DB\GDT_String;
 use GDO\User\GDO_User;
+use GDO\Maps\GDT_Position;
 /**
  * GWS_Commands have to register via GWS_Commands::register($code, GWS_Command, $binary=true)
  * @author gizmore
@@ -77,6 +78,11 @@ abstract class GWS_Command
 			        $time = Time::getTimestamp($date);
 			    }
 				$payload .= GWS_Message::wr32($time);
+			}
+			elseif ($field instanceof GDT_Position)
+			{
+				$payload .= GWS_Message::wrF($field->getLat());
+				$payload .= GWS_Message::wrF($field->getLng());
 			}
 			else
 			{
