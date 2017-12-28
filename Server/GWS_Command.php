@@ -48,6 +48,8 @@ abstract class GWS_Command
 		$payload = '';
 		foreach ($fields as $field)
 		{
+			$field->gdo($gdo);
+			
 			if ( ($field instanceof GDT_Password) ||
 			     ($field instanceof GDT_IP) )
 			{
