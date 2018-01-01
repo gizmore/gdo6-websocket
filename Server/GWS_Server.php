@@ -14,11 +14,14 @@ use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 use Exception;
 use GDO\Core\ModuleLoader;
+use GDO\Core\WithInstance;
 
 include 'GWS_Message.php';
 
 final class GWS_Server implements MessageComponentInterface
 {
+	use WithInstance;
+	
     /**
      * @var GWS_Commands
      */
@@ -31,6 +34,7 @@ final class GWS_Server implements MessageComponentInterface
 	
 	public function __construct()
 	{
+		self::$INSTANCE = $this;
 		if (GWF_IPC)
 		{
 			for ($i = 1; $i < GWF_IPC; $i++)
@@ -80,6 +84,8 @@ final class GWS_Server implements MessageComponentInterface
 
 	public function onMessage(ConnectionInterface $from, $data)
 	{
+		die('NON BINARY MESSAGE NOT SUPPORTED ANYMORE');
+		
 		printf("%s >> %s\n", $from->user() ? $from->user()->displayName() : '???', $data);
 		$message = new GWS_Message($data, $from);
 		$message->readTextCmd();
@@ -118,8 +124,9 @@ final class GWS_Server implements MessageComponentInterface
 		else
 		{
 			try {
-			    GDO_User::$CURRENT = $from->user();
-			    GDO_Session::reloadID($from->user()->tempGet('sess_id'));
+				GDO_User::$CURRENT = $from->user();
+			    $sessid = $from->user()->tempGet('sess_id');
+			    GDO_Session::reloadID($sessid);
 			    $this->handler->executeMessage($message);
 			}
 			catch (Exception $e) {
@@ -173,6 +180,11 @@ final class GWS_Server implements MessageComponentInterface
 	public function onError(ConnectionInterface $conn, \Exception $e)
 	{
 		Logger::logCron(sprintf("GWS_Server::onError()"));
+	}
+	
+	public function onLogout(GDO_User $user)
+	{
+		$this->handler->logout($user);
 	}
 	
 	############

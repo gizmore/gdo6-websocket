@@ -54,25 +54,28 @@ final class GWS_Form
 	
 	private static function bind(GDT $gdoType, GWS_Message $msg)
 	{
-		if ($gdoType instanceof GDT_Checkbox)
+		if ($gdoType->isSerializable())
 		{
-			$gdoType->value($msg->read8() > 0);
-		}
-		elseif ($gdoType instanceof GDT_String)
-		{
-			$gdoType->value($msg->readString());
-		}
-		elseif ($gdoType instanceof GDT_Decimal)
-		{
-			$gdoType->value($msg->readFloat());
-		}
-		elseif ($gdoType instanceof GDT_Int)
-		{
-			$gdoType->value($msg->readN($gdoType->bytes, !$gdoType->unsigned));
-		}
-		elseif ($gdoType instanceof GDT_Object)
-		{
-			$gdoType->val($msg->read32u());
+			if ($gdoType instanceof GDT_Checkbox)
+			{
+				$gdoType->value($msg->read8() > 0);
+			}
+			elseif ($gdoType instanceof GDT_String)
+			{
+				$gdoType->value($msg->readString());
+			}
+			elseif ($gdoType instanceof GDT_Decimal)
+			{
+				$gdoType->value($msg->readFloat());
+			}
+			elseif ($gdoType instanceof GDT_Int)
+			{
+				$gdoType->value($msg->readN($gdoType->bytes, !$gdoType->unsigned));
+			}
+			elseif ($gdoType instanceof GDT_Object)
+			{
+				$gdoType->val($msg->read32u());
+			}
 		}
 	}
 }

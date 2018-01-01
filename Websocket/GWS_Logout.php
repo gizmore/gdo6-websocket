@@ -8,17 +8,24 @@ use GDO\Websocket\Server\GWS_Commands;
 use GDO\Websocket\Server\GWS_Global;
 use GDO\Websocket\Server\GWS_Message;
 use GDO\Login\Method\Logout;
+use GDO\Websocket\Server\GWS_Server;
 
 final class GWS_Logout extends GWS_Command
 {
     public function execute(GWS_Message $msg)
     {
+    	$sessid = GDO_Session::instance()->getID();
+    	
+    	GWS_Server::instance()->onLogout($msg->user());
     	GWS_Global::removeUser($msg->user());
     	Logout::make()->execute();
-//         GDO_Session::reset();
+    	
     	$user = GDO_User::$CURRENT;
-        $user->tempSet('sess_id', GDO_Session::instance()->getID());
         $msg->conn()->setUser($user);
+
+        $user->tempSet('sess_id', $sessid);
+        $user->recache();
+        
         $msg->replyBinary($msg->cmd(), $this->userToBinary($user));
     }
 }

@@ -18,7 +18,9 @@ final class GWS_AsGuest extends GWS_CommandForm
 	{
 		GDO_User::$CURRENT = $user = GDO_Session::instance()->getUser();
 		GWS_Global::addUser(GDO_User::current(), $msg->conn());
-		GDO_Session::reset();
+		$user->tempSet('sess_id', GDO_Session::instance()->getID());
+		$msg->conn()->setUser($user);
+		GWS_Global::addUser($user, $msg->conn());
 		$msg->replyBinary($msg->cmd(), $this->userToBinary($user));
 	}
 }

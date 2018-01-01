@@ -78,4 +78,5 @@ class GWS_Commands
 	public function timer() {}
 	public function connect(GDO_User $user) {}
 	public function disconnect(GDO_User $user) {}
+	public function logout(GDO_User $user) {}
 }
