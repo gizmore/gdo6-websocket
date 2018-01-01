@@ -68,13 +68,13 @@ final class GWS_Form
 			{
 				$gdoType->value($msg->readFloat());
 			}
-			elseif ($gdoType instanceof GDT_Int)
-			{
-				$gdoType->value($msg->readN($gdoType->bytes, !$gdoType->unsigned));
-			}
 			elseif ($gdoType instanceof GDT_Object)
 			{
 				$gdoType->val($msg->read32u());
+			}
+			elseif ($gdoType instanceof GDT_Int)
+			{
+				$gdoType->value($msg->readN($gdoType->bytes, !$gdoType->unsigned));
 			}
 		}
 	}

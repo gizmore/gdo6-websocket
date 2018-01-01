@@ -123,6 +123,7 @@ service('GDOWebsocketSrvc', function($q, $rootScope, GDOErrorSrvc, GDOLoadingSrv
 			if (WebsocketSrvc.SYNC_MSGS[mid]) {
 				if (error) {
 					var key = gwsMessage.readString();
+					console.log(key);
 					GDOErrorSrvc.showError(sprintf('Code %04X: %s', error, key), 'Protocol error');
 					WebsocketSrvc.SYNC_MSGS[mid].reject({code: error, key: key});
 				}
