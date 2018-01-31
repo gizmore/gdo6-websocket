@@ -166,11 +166,13 @@ final class GWS_Message
 	public function writeTimestamp() { return self::wrTS(); }
 	public function write8($value) { return self::wrN(1, $value); }
 	public function write16($value) { return self::wrN(2, $value); }
+	public function writeCmd($value) { return self::wrN(2, $value); }
 	public function write24($value) { return self::wrN(3, $value); }
 	public function write32($value) { return self::wrN(4, $value); }
 	public function write64($value) { return self::wrN(8, $value); }
 	public static function wr8($value) { return self::wrN(1, $value); }
 	public static function wr16($value) { return self::wrN(2, $value); }
+	public static function wrCmd($value) { return self::wrN(2, $value); }
 	public static function wr24($value) { return self::wrN(3, $value); }
 	public static function wr32($value) { return self::wrN(4, $value); }
 	public static function wr64($value) { return self::wrN(8, $value); }

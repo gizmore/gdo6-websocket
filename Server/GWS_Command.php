@@ -12,6 +12,7 @@ use GDO\User\GDT_Password;
 use GDO\DB\GDT_String;
 use GDO\User\GDO_User;
 use GDO\Maps\GDT_Position;
+use GDO\Core\GDT_Secret;
 /**
  * GWS_Commands have to register via GWS_Commands::register($code, GWS_Command, $binary=true)
  * @author gizmore
@@ -41,7 +42,7 @@ abstract class GWS_Command
 		$fields = $user->gdoColumnsExcept('user_password', 'user_register_ip');
 		return $this->gdoToBinary($user, array_keys($fields));
 	}
-
+	
 	public function gdoToBinary(GDO $gdo, array $fields=null)
 	{
 		$fields = $fields ? $gdo->getGDOColumns($fields) : $gdo->gdoColumnsCache();
@@ -51,7 +52,8 @@ abstract class GWS_Command
 			$field->gdo($gdo);
 			
 			if ( ($field instanceof GDT_Password) ||
-			     ($field instanceof GDT_IP) )
+			     ($field instanceof GDT_IP) ||
+				 ($field instanceof GDT_Secret) )
 			{
 				# skip
 			}
