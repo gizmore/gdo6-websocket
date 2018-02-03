@@ -7,7 +7,6 @@ use GDO\Form\MethodForm;
 use GDO\Core\GDT_Response;
 use GDO\DB\GDT_String;
 use GDO\DB\GDT_Int;
-use GDO\Core\GDT_JSON;
 use GDO\Core\GDT_JSONResponse;
 use GDO\Core\GDT;
 /**
