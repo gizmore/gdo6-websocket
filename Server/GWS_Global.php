@@ -8,7 +8,7 @@ final class GWS_Global
 {
 // 	public static $LOGGING = false;
 	/**
-	 * @var User[]
+	 * @var GDO_User[]
 	 */
 	public static $USERS = array();
 	public static $CONNECTIONS = array();
@@ -154,7 +154,7 @@ final class GWS_Global
 	
 	public static function sendBinary(GDO_User $user, $payload)
 	{
-		if ($conn = self::$CONNECTIONS[$user->getID()])
+		if ($conn = @self::$CONNECTIONS[$user->getID()])
 		{
 			Logger::logWebsocket(sprintf("%s << BIN", $user->displayName()));
 			GWS_Message::hexdump($payload);
