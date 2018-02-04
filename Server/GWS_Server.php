@@ -67,7 +67,7 @@ final class GWS_Server implements MessageComponentInterface
 	    {
 	    	try {
 		        GWS_Commands::webHook($message);
-	    	} catch (\Exception $e) {
+	    	} catch (\Exception $ex) {
 	    		Logger::logException($ex);
 	    	}
 	        $this->ipcTimer();
