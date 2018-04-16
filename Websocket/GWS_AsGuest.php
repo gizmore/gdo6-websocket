@@ -9,10 +9,11 @@ use GDO\Websocket\Server\GWS_CommandForm;
 use GDO\Websocket\Server\GWS_Commands;
 use GDO\Websocket\Server\GWS_Global;
 use GDO\Websocket\Server\GWS_Message;
+use GDO\Register\Method\Guest;
 
 final class GWS_AsGuest extends GWS_CommandForm
 {
-	public function getMethod() { return method('Register', 'Guest'); }
+	public function getMethod() { return Guest::make(); }
 
 	public function replySuccess(GWS_Message $msg, GDT_Form $form, GDT_Response $response)
 	{
