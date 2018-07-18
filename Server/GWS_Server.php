@@ -138,11 +138,11 @@ final class GWS_Server implements MessageComponentInterface
 	
 	public function onAuthBinary(GWS_Message $message)
 	{
-		if (!$message->cmd() === 0x0001)
+		if ($message->cmd() !== 0x0001)
 		{
 			$message->replyError(0x0001);
 		}
-		elseif (!$cookie = $message->readString())
+		elseif (!($cookie = $message->readString()))
 		{
 			$message->replyError(0x0002);
 		}

@@ -51,7 +51,9 @@ final class Module_Websocket extends GDO_Module
 	public function defaultProcessorPath() { return sprintf('%sGDO/Websocket/Server/GWS_NoCommands.php', GWF_PATH); }
 	public function processorClass()
 	{
+	    var_dump(GWF_PATH);
 	    $path = Strings::substrFrom($this->cfgWebsocketProcessorPath(), GWF_PATH);
+	    
 	    $path = str_replace('/', '\\', $path);
 	    return Strings::substrTo($path, '.'); 
 	}
