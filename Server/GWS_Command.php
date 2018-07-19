@@ -13,6 +13,8 @@ use GDO\DB\GDT_String;
 use GDO\User\GDO_User;
 use GDO\Maps\GDT_Position;
 use GDO\Core\GDT_Secret;
+use GDO\Core\GDT;
+use GDO\Table\GDT_PageMenu;
 /**
  * GWS_Commands have to register via GWS_Commands::register($code, GWS_Command, $binary=true)
  * @author gizmore
@@ -94,6 +96,14 @@ abstract class GWS_Command
 			}
 		}
 		return $payload;
+	}
+	
+	public function pagemenuToBinary(GDT_PageMenu $gdt)
+	{
+	    return GWS_Message::wr16($gdt->getPage()) . 
+	       GWS_Message::wr16($gdt->getPages()) .
+	       GWS_Message::wr32($gdt->numItems) .
+	       GWS_Message::wr16($gdt->ipp);
 	}
 
 }
