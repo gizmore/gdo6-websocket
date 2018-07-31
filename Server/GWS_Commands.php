@@ -3,6 +3,8 @@ namespace GDO\Websocket\Server;
 
 use GDO\Core\GDOError;
 use GDO\User\GDO_User;
+use GDO\Core\Logger;
+use GDO\User\GDO_Session;
 
 include 'GWS_Command.php';
 include 'GWS_CommandForm.php';
@@ -68,6 +70,11 @@ class GWS_Commands
 		{
 			throw new GDOError('err_gws_unknown_cmd', [$cmd]);
 		}
+		if ($session = GDO_Session::instance())
+		{
+		    $session->saveVar('sess_last_url', "ws://" . get_class(self::$COMMANDS[$cmd]));
+		}
+		Logger::logWebsocket("Executing " . get_class(self::$COMMANDS[$cmd]));
 		return self::$COMMANDS[$cmd]->setMessage($message);
 	}
 
