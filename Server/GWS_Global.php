@@ -28,8 +28,16 @@ final class GWS_Global
 
 		if (isset(self::$USERS[$userid]))
 		{
+		    # Old user
+		    $old = self::$USERS[$userid];
 			unset(self::$USERS[$userid]);
-			return self::loadUserById($userid);
+
+			# Setup important stuff
+			$user = self::loadUserById($userid); # reload
+			$sessid = $old->tempGet('sess_id'); # set sesid
+		    $user->tempSet('sess_id', $sessid);
+			$conn = self::$CONNECTIONS[$userid]; # set connection
+			$conn->setUser($user);
 		}
 		else
 		{
