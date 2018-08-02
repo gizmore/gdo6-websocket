@@ -9,6 +9,7 @@ use GDO\DB\GDT_String;
 use GDO\DB\GDT_Int;
 use GDO\Core\GDT_JSONResponse;
 use GDO\Core\GDT;
+use GDO\Core\GDOException;
 /**
  * Call MethodForm via websockets.
  * @author gizmore
@@ -29,7 +30,17 @@ abstract class GWS_CommandForm extends GWS_Command
 	    $_POST = []; $_REQUEST = []; $_FILES = [];
 	    $method = $this->getMethod();
 	    $this->fillRequestVars($msg);
-	    $form = GWS_Form::bindMethodForm($method, $msg);
+	    
+	    try
+	    {
+	        $form = GWS_Form::bindMethodForm($method, $msg);
+	    }
+	    catch (GDOException $ex)
+	    {
+	        $msg->replyErrorMessage($msg->cmd(), t("err_bind_form", [$ex->getMessage()]));
+	        return;
+	    }
+
 	    $this->selectSubmit($form);
 	    $this->removeCSRF($form);
 // 	    $this->removeCaptcha($form);
@@ -47,7 +58,13 @@ abstract class GWS_CommandForm extends GWS_Command
 		else
 		{
 			$this->replySuccess($msg, $form, $response);
+			$this->afterReplySuccess($msg);
 		}
+	}
+	
+	public function afterReplySuccess(GWS_Message $msg)
+	{
+	    
 	}
 	
 	public function replySuccess(GWS_Message $msg, GDT_Form $form, GDT_Response $response)

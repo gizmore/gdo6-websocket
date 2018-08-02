@@ -10,6 +10,8 @@ use GDO\DB\GDT_Int;
 use GDO\DB\GDT_String;
 use GDO\DB\GDT_Checkbox;
 use GDO\Core\GDT;
+use GDO\Core\Logger;
+use GDO\Core\GDOException;
 /**
  * Fill a GDT_Form with a GWS_Message.
  * Fill a Method with a GWS_Message.
@@ -54,28 +56,36 @@ final class GWS_Form
 	
 	private static function bind(GDT $gdoType, GWS_Message $msg)
 	{
-		if ($gdoType->isSerializable())
-		{
-			if ($gdoType instanceof GDT_Checkbox)
-			{
-				$gdoType->value($msg->read8() > 0);
-			}
-			elseif ($gdoType instanceof GDT_String)
-			{
-				$gdoType->value($msg->readString());
-			}
-			elseif ($gdoType instanceof GDT_Decimal)
-			{
-				$gdoType->value($msg->readFloat());
-			}
-			elseif ($gdoType instanceof GDT_Object)
-			{
-				$gdoType->val($msg->read32u());
-			}
-			elseif ($gdoType instanceof GDT_Int)
-			{
-				$gdoType->value($msg->readN($gdoType->bytes, !$gdoType->unsigned));
-			}
-		}
+	    try
+	    {
+	        if ($gdoType->isSerializable())
+	        {
+	            if ($gdoType instanceof GDT_Checkbox)
+	            {
+	                $gdoType->value($msg->read8() > 0);
+	            }
+	            elseif ($gdoType instanceof GDT_String)
+	            {
+	                $gdoType->value($msg->readString());
+	            }
+	            elseif ($gdoType instanceof GDT_Decimal)
+	            {
+	                $gdoType->value($msg->readFloat());
+	            }
+	            elseif ($gdoType instanceof GDT_Object)
+	            {
+	                $gdoType->val($msg->read32u());
+	            }
+	            elseif ($gdoType instanceof GDT_Int)
+	            {
+	                $gdoType->value($msg->readN($gdoType->bytes, !$gdoType->unsigned));
+	            }
+	        }
+	    }
+	    catch (GDOException $ex)
+	    {
+	        Logger::logException($ex);
+	        throw new GDOException("Cannot read {$gdoType->name} which is a " . get_class($gdoType));
+	    }
 	}
 }

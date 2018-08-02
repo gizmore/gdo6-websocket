@@ -3,6 +3,7 @@ namespace GDO\Websocket\Server;
 
 use GDO\Core\Logger;
 use GDO\User\GDO_User;
+use GDO\Core\GDOException;
 
 final class GWS_Message
 {
@@ -71,7 +72,7 @@ final class GWS_Message
 	##############
 	### Reader ###
 	##############
-	public function hasMore() { return $this->index < strlen($this->data); }
+	public function hasMore($n=1) { return $this->index + $n <= strlen($this->data); }
 	public function readPayload() { return $this->data; }
 	public function readJSON() { return json_encode($this->data); }
 	public function read8($signed=true, $index=-1) { return $this->readN(1, $signed, $index); }
@@ -93,6 +94,11 @@ final class GWS_Message
 	
 	public function readN($bytes, $signed=true, $index=-1)
 	{
+	    if (!$this->hasMore($bytes))
+	    {
+	        throw new GDOException("Buffer underflow in bytestream.");
+	    }
+	    
 		$index = $this->index($index);
 		$back = 0;
 		for ($i = 0; $i < $bytes; $i++)
