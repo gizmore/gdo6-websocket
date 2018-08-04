@@ -12,6 +12,7 @@ use GDO\DB\GDT_Checkbox;
 use GDO\Core\GDT;
 use GDO\Core\Logger;
 use GDO\Core\GDOException;
+use GDO\DB\GDT_Float;
 /**
  * Fill a GDT_Form with a GWS_Message.
  * Fill a Method with a GWS_Message.
@@ -68,7 +69,8 @@ final class GWS_Form
 	            {
 	                $gdoType->value($msg->readString());
 	            }
-	            elseif ($gdoType instanceof GDT_Decimal)
+	            elseif ( ($gdoType instanceof GDT_Decimal) ||
+	                     ($gdoType instanceof GDT_Float) )
 	            {
 	                $gdoType->value($msg->readFloat());
 	            }

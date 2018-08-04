@@ -15,6 +15,7 @@ use GDO\Maps\GDT_Position;
 use GDO\Core\GDT_Secret;
 use GDO\Core\GDT;
 use GDO\Table\GDT_PageMenu;
+use GDO\DB\GDT_Float;
 /**
  * GWS_Commands have to register via GWS_Commands::register($code, GWS_Command, $binary=true)
  * @author gizmore
@@ -63,7 +64,8 @@ abstract class GWS_Command
 			{
 				$payload .= GWS_Message::wrS($gdo->getVar($field->name));
 			}
-			elseif ($field instanceof GDT_Decimal)
+			elseif ( ($field instanceof GDT_Decimal) ||
+			         ($field instanceof GDT_Float) )
 			{
 				$payload .= GWS_Message::wrF($gdo->getVar($field->name));
 			}
