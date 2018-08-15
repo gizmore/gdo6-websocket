@@ -22,28 +22,33 @@ final class GWS_Global
 		self::$CONNECTIONS[$user->getID()] = $conn;
 	}
 	
-	public static function recacheUser($userid)
-	{
-		GDO_User::table()->cache->uncacheID($userid);
+// 	/**
+// 	 * Broken and unhealthy.
+// 	 * A fix would be to recache all cached instances of a user.
+// 	 * E.G. Currently missing is LUP_Room user cache ... just dont recache. only fix users.
+// 	 */
+// 	public static function recacheUser($userid)
+// 	{
+// 		GDO_User::table()->cache->uncacheID($userid);
 
-		if (isset(self::$USERS[$userid]))
-		{
-			# Old user
-			$old = self::$USERS[$userid];
-			unset(self::$USERS[$userid]);
+// 		if (isset(self::$USERS[$userid]))
+// 		{
+// 			# Old user
+// 			$old = self::$USERS[$userid];
+// 			unset(self::$USERS[$userid]);
 
-			# Setup important stuff
-			$user = self::loadUserById($userid); # reload
-			$sessid = $old->tempGet('sess_id'); # set sesid
-			$user->tempSet('sess_id', $sessid);
-			$conn = self::$CONNECTIONS[$userid]; # set connection
-			$conn->setUser($user);
-		}
-		else
-		{
-			return GDO_User::getById($userid);
-		}
-	}
+// 			# Setup important stuff
+// 			$user = self::loadUserById($userid); # reload
+// 			$sessid = $old->tempGet('sess_id'); # set sesid
+// 			$user->tempSet('sess_id', $sessid);
+// 			$conn = self::$CONNECTIONS[$userid]; # set connection
+// 			$conn->setUser($user);
+// 		}
+// 		else
+// 		{
+// 			return GDO_User::getById($userid);
+// 		}
+// 	}
 	
 	public static function removeUser(GDO_User $user, $reason='NO_REASON')
 	{
