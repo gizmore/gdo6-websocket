@@ -22,13 +22,13 @@ final class GWS_Server implements MessageComponentInterface
 {
 	use WithInstance;
 	
-    /**
-     * @var GWS_Commands
-     */
-    private $handler;
-    private $allowGuests;
-    
-    private $gws;
+	/**
+	 * @var GWS_Commands
+	 */
+	private $handler;
+	private $allowGuests;
+	
+	private $gws;
 	private $server;
 	private $ipc;
 	
@@ -54,24 +54,24 @@ final class GWS_Server implements MessageComponentInterface
 		}
 		if (GWF_IPC)
 		{
-		    $this->server->loop->addPeriodicTimer(0.250, [$this, 'ipcTimer']);
+			$this->server->loop->addPeriodicTimer(0.250, [$this, 'ipcTimer']);
 		}
 		$this->server->run();
 	}
 	
 	public function ipcTimer()
 	{
-	    $message = null; $messageType = 0;
-	    msg_receive($this->ipc, GWF_IPC, $messageType, 1000000, $message, true, MSG_IPC_NOWAIT);
-	    if ($message)
-	    {
-	    	try {
-		        GWS_Commands::webHook($message);
-	    	} catch (\Exception $ex) {
-	    		Logger::logException($ex);
-	    	}
-	        $this->ipcTimer();
-	    }
+		$message = null; $messageType = 0;
+		msg_receive($this->ipc, GWF_IPC, $messageType, 1000000, $message, true, MSG_IPC_NOWAIT);
+		if ($message)
+		{
+			try {
+				GWS_Commands::webHook($message);
+			} catch (\Exception $ex) {
+				Logger::logException($ex);
+			}
+			$this->ipcTimer();
+		}
 	}
 	
 	###############
@@ -91,7 +91,7 @@ final class GWS_Server implements MessageComponentInterface
 		$message->readTextCmd();
 		if ($from->user())
 		{
-		    GDT_IP::$CURRENT = $from->getRemoteAddress();
+			GDT_IP::$CURRENT = $from->getRemoteAddress();
 			GDO_User::$CURRENT = $from->user();
 			GDO_Session::reloadID($from->user()->tempGet('sess_id'));
 			try
@@ -100,7 +100,7 @@ final class GWS_Server implements MessageComponentInterface
 			}
 			catch (Exception $e)
 			{
-			    Logger::logException($e);
+				Logger::logException($e);
 				$message->replyErrorMessage($message->cmd(), $e->getMessage());
 			}
 		}
@@ -125,9 +125,9 @@ final class GWS_Server implements MessageComponentInterface
 		{
 			try {
 				GDO_User::$CURRENT = $from->user();
-			    $sessid = $from->user()->tempGet('sess_id');
-			    GDO_Session::reloadID($sessid);
-			    $this->handler->executeMessage($message);
+				$sessid = $from->user()->tempGet('sess_id');
+				GDO_Session::reloadID($sessid);
+				$this->handler->executeMessage($message);
 			}
 			catch (Exception $e) {
 				Logger::logWebsocket(Debug::backtraceException($e, false));

@@ -27,25 +27,25 @@ abstract class GWS_CommandForm extends GWS_Command
 	
 	public function execute(GWS_Message $msg)
 	{
-	    $_POST = []; $_REQUEST = []; $_FILES = [];
-	    $method = $this->getMethod();
-	    $this->fillRequestVars($msg);
-	    
-	    try
-	    {
-	        $form = GWS_Form::bindMethodForm($method, $msg);
-	    }
-	    catch (GDOException $ex)
-	    {
-	        $msg->replyErrorMessage($msg->cmd(), t("err_bind_form", [$ex->getMessage()]));
-	        return;
-	    }
+		$_POST = []; $_REQUEST = []; $_FILES = [];
+		$method = $this->getMethod();
+		$this->fillRequestVars($msg);
+		
+		try
+		{
+			$form = GWS_Form::bindMethodForm($method, $msg);
+		}
+		catch (GDOException $ex)
+		{
+			$msg->replyErrorMessage($msg->cmd(), t("err_bind_form", [$ex->getMessage()]));
+			return;
+		}
 
-	    $this->selectSubmit($form);
-	    $this->removeCSRF($form);
-// 	    $this->removeCaptcha($form);
-	    $response = $method->exec();
-	    $this->postExecute($msg, $form, $response);
+		$this->selectSubmit($form);
+		$this->removeCSRF($form);
+// 		$this->removeCaptcha($form);
+		$response = $method->exec();
+		$this->postExecute($msg, $form, $response);
 	}
 	
 	public function postExecute(GWS_Message $msg, GDT_Form $form, GDT_Response $response)
@@ -64,7 +64,7 @@ abstract class GWS_CommandForm extends GWS_Command
 	
 	public function afterReplySuccess(GWS_Message $msg)
 	{
-	    
+		
 	}
 	
 	public function replySuccess(GWS_Message $msg, GDT_Form $form, GDT_Response $response)
@@ -122,12 +122,12 @@ abstract class GWS_CommandForm extends GWS_Command
 	
 	protected function removeCaptcha(GDT_Form $form)
 	{
-	    $form->removeField('captcha');
+		$form->removeField('captcha');
 	}
 	
 	protected function removeCSRF(GDT_Form $form)
 	{
-	    $form->removeField('xsrf');
+		$form->removeField('xsrf');
 	}
 	
 	protected function selectSubmit(GDT_Form $form)

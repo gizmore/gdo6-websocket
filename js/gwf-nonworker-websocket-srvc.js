@@ -62,32 +62,32 @@ service('GDOWebsocketSrvc', function($q, $rootScope, GDOErrorSrvc, GDOLoadingSrv
 				console.log('onopen');
 				GDOLoadingSrvc.stopTask('wsconnect');
 				WebsocketSrvc.startQueue();
-		    	WebsocketSrvc.authenticate().then(function(result){
-			    	WebsocketSrvc.CONNECTED = true;
-		    		$rootScope.$broadcast('gws-ws-open');
-			    	defer.resolve();
-		    	}, defer.reject);
+				WebsocketSrvc.authenticate().then(function(result){
+					WebsocketSrvc.CONNECTED = true;
+					$rootScope.$broadcast('gws-ws-open');
+					defer.resolve();
+				}, defer.reject);
 			};
-		    ws.onclose = function() {
+			ws.onclose = function() {
 				GDOLoadingSrvc.stopTask('wsconnect');
-		    	WebsocketSrvc.disconnect(true);
-		    	if (WebsocketSrvc.CONNECTED) {
-			    	WebsocketSrvc.CONNECTED = false;
-		    		$rootScope.$broadcast('gws-ws-close');
-		    	}
-		    };
-		    ws.onerror = function(event) {
-		    	WebsocketSrvc.disconnect(true);
+				WebsocketSrvc.disconnect(true);
+				if (WebsocketSrvc.CONNECTED) {
+					WebsocketSrvc.CONNECTED = false;
+					$rootScope.$broadcast('gws-ws-close');
+				}
+			};
+			ws.onerror = function(event) {
+				WebsocketSrvc.disconnect(true);
 				defer.reject("Connection closed");
-		    };
-		    ws.onmessage = function(message) {
-		    	if (message.data instanceof ArrayBuffer) {
-		    		WebsocketSrvc.onBinaryMessage(message);
-		    	}
-		    	else {
-		    		WebsocketSrvc.onMessage(message);
-		    	}
-		    };
+			};
+			ws.onmessage = function(message) {
+				if (message.data instanceof ArrayBuffer) {
+					WebsocketSrvc.onBinaryMessage(message);
+				}
+				else {
+					WebsocketSrvc.onMessage(message);
+				}
+			};
 		}
 		else {
 			console.log('Was connected.')
@@ -97,20 +97,20 @@ service('GDOWebsocketSrvc', function($q, $rootScope, GDOErrorSrvc, GDOLoadingSrv
 	};
 	
 	WebsocketSrvc.onMessage = function(message) {
-    	console.log('WebsocketSrvc.onMessage()', message.data);
-    	if (message.data.indexOf('ERR:') === 0) {
-    		GDOErrorSrvc.showError(message.data, 'Protocol error');
-    	}
-    	else if (message.data.indexOf('AUTH:') === 0) {
-    		WebsocketSrvc.syncMessage(message.data);
-    	}
-    	else if (message.data.indexOf(':MID:') >= 0) {
-    		if (!WebsocketSrvc.syncMessage(message.data)) {
-    			WebsocketSrvc.processMessage(mesage.data);
-    		}
-    	} else {
+		console.log('WebsocketSrvc.onMessage()', message.data);
+		if (message.data.indexOf('ERR:') === 0) {
+			GDOErrorSrvc.showError(message.data, 'Protocol error');
+		}
+		else if (message.data.indexOf('AUTH:') === 0) {
+			WebsocketSrvc.syncMessage(message.data);
+		}
+		else if (message.data.indexOf(':MID:') >= 0) {
+			if (!WebsocketSrvc.syncMessage(message.data)) {
+				WebsocketSrvc.processMessage(mesage.data);
+			}
+		} else {
 			WebsocketSrvc.processMessage(message.data);
-    	}
+		}
 	};
 
 	WebsocketSrvc.onBinaryMessage = function(message) {
@@ -143,7 +143,7 @@ service('GDOWebsocketSrvc', function($q, $rootScope, GDOErrorSrvc, GDOLoadingSrv
 	WebsocketSrvc.processMessage = function(messageText) {
 //		console.log('ConnectCtrl.processMessage()', messageText);
 		var command = messageText.substrUntil(':');
-    	$rootScope.$broadcast('gws-ws-message', messageText);
+		$rootScope.$broadcast('gws-ws-message', messageText);
 	};
 
 	WebsocketSrvc.disconnect = function(event) {

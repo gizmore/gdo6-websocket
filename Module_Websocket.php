@@ -51,10 +51,10 @@ final class Module_Websocket extends GDO_Module
 	public function defaultProcessorPath() { return sprintf('%sGDO/Websocket/Server/GWS_NoCommands.php', GWF_PATH); }
 	public function processorClass()
 	{
-	    $path = Strings::substrFrom($this->cfgWebsocketProcessorPath(), GWF_PATH);
-	    
-	    $path = str_replace('/', '\\', $path);
-	    return Strings::substrTo($path, '.'); 
+		$path = Strings::substrFrom($this->cfgWebsocketProcessorPath(), GWF_PATH);
+		
+		$path = str_replace('/', '\\', $path);
+		return Strings::substrTo($path, '.'); 
 	}
 
 	##########
@@ -62,11 +62,11 @@ final class Module_Websocket extends GDO_Module
 	##########
 	public function onIncludeScripts()
 	{
-	    if (module_enabled('Angular'))
-	    {
-    		$this->addJavascript('js/gwf-websocket-srvc.js');
-    		$this->addJavascript('js/gwf-ws-navbar-ctrl.js');
-	    }
+		if (module_enabled('Angular'))
+		{
+			$this->addJavascript('js/gwf-websocket-srvc.js');
+			$this->addJavascript('js/gwf-ws-navbar-ctrl.js');
+		}
 		$this->addJavascript('js/gws-message.js');
 		Javascript::addJavascriptInline($this->configJS());
 	}

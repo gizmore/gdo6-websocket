@@ -63,16 +63,16 @@ service('GDOWebsocketSrvc', function($q, $rootScope, GDOErrorSrvc, GDOLoadingSrv
 				switch(e.data.cmd) {
 				case 'open':
 					GDOLoadingSrvc.stopTask('wsconnect');
-			    	WebsocketSrvc.authenticate().then(function(result){
-				    	WebsocketSrvc.CONNECTED = true;
-			    		$rootScope.$broadcast('gws-ws-open');
-				    	defer.resolve();
-			    	}, defer.reject);
-			    	break;
+					WebsocketSrvc.authenticate().then(function(result){
+						WebsocketSrvc.CONNECTED = true;
+						$rootScope.$broadcast('gws-ws-open');
+						defer.resolve();
+					}, defer.reject);
+					break;
 				case 'close':
 					GDOLoadingSrvc.stopTask('wsconnect');
-			    	WebsocketSrvc.CONNECTED = false;
-		    		$rootScope.$broadcast('gws-ws-close');
+					WebsocketSrvc.CONNECTED = false;
+					$rootScope.$broadcast('gws-ws-close');
 	
 				case 'error':
 					break;
@@ -97,20 +97,20 @@ service('GDOWebsocketSrvc', function($q, $rootScope, GDOErrorSrvc, GDOLoadingSrv
 	};
 	
 	WebsocketSrvc.onMessage = function(message) {
-    	console.log('WebsocketSrvc.onMessage()', message);
-    	if (message.indexOf('ERR:') === 0) {
-    		GDOErrorSrvc.showError(message, 'Protocol error');
-    	}
-    	else if (message.indexOf('AUTH:') === 0) {
-    		WebsocketSrvc.syncMessage(message);
-    	}
-    	else if (message.indexOf(':MID:') >= 0) {
-    		if (!WebsocketSrvc.syncMessage(message)) {
-    			WebsocketSrvc.processMessage(mesage);
-    		}
-    	} else {
+		console.log('WebsocketSrvc.onMessage()', message);
+		if (message.indexOf('ERR:') === 0) {
+			GDOErrorSrvc.showError(message, 'Protocol error');
+		}
+		else if (message.indexOf('AUTH:') === 0) {
+			WebsocketSrvc.syncMessage(message);
+		}
+		else if (message.indexOf(':MID:') >= 0) {
+			if (!WebsocketSrvc.syncMessage(message)) {
+				WebsocketSrvc.processMessage(mesage);
+			}
+		} else {
 			WebsocketSrvc.processMessage(message);
-    	}
+		}
 	};
 
 	WebsocketSrvc.onBinaryMessage = function(message) {
@@ -145,7 +145,7 @@ service('GDOWebsocketSrvc', function($q, $rootScope, GDOErrorSrvc, GDOLoadingSrv
 	WebsocketSrvc.processMessage = function(messageText) {
 //		console.log('ConnectCtrl.processMessage()', messageText);
 		var command = messageText.substrUntil(':');
-    	$rootScope.$broadcast('gws-ws-message', messageText);
+		$rootScope.$broadcast('gws-ws-message', messageText);
 	};
 
 	WebsocketSrvc.disconnect = function(event) {

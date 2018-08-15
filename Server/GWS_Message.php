@@ -94,11 +94,11 @@ final class GWS_Message
 	
 	public function readN($bytes, $signed=true, $index=-1)
 	{
-	    if (!$this->hasMore($bytes))
-	    {
-	        throw new GDOException("Buffer underflow in bytestream.");
-	    }
-	    
+		if (!$this->hasMore($bytes))
+		{
+			throw new GDOException("Buffer underflow in bytestream.");
+		}
+		
 		$index = $this->index($index);
 		$back = 0;
 		for ($i = 0; $i < $bytes; $i++)

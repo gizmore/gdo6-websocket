@@ -55,7 +55,7 @@ abstract class GWS_Command
 			$field->gdo($gdo);
 			
 			if ( ($field instanceof GDT_Password) ||
-			     ($field instanceof GDT_IP) ||
+				 ($field instanceof GDT_IP) ||
 				 ($field instanceof GDT_Secret) )
 			{
 				# skip
@@ -65,13 +65,13 @@ abstract class GWS_Command
 				$payload .= GWS_Message::wrS($gdo->getVar($field->name));
 			}
 			elseif ( ($field instanceof GDT_Decimal) ||
-			         ($field instanceof GDT_Float) )
+					 ($field instanceof GDT_Float) )
 			{
 				$payload .= GWS_Message::wrF($gdo->getVar($field->name));
 			}
 			elseif ($field instanceof GDT_Int)
 			{
-			    $payload .= GWS_Message::wrN($field->bytes, $gdo->getVar($field->name));
+				$payload .= GWS_Message::wrN($field->bytes, $gdo->getVar($field->name));
 			}
 			elseif ($field instanceof GDT_Enum)
 			{
@@ -80,11 +80,11 @@ abstract class GWS_Command
 			}
 			elseif ($field instanceof GDT_Timestamp)
 			{
-			    $time = 0;
-			    if ($date = $gdo->getVar($field->name))
-			    {
-			        $time = Time::getTimestamp($date);
-			    }
+				$time = 0;
+				if ($date = $gdo->getVar($field->name))
+				{
+					$time = Time::getTimestamp($date);
+				}
 				$payload .= GWS_Message::wr32($time);
 			}
 			elseif ($field instanceof GDT_Position)
@@ -94,7 +94,7 @@ abstract class GWS_Command
 			}
 			else
 			{
-			    die("Cannot ws encode {$field->name}");
+				die("Cannot ws encode {$field->name}");
 			}
 		}
 		return $payload;
@@ -102,10 +102,10 @@ abstract class GWS_Command
 	
 	public function pagemenuToBinary(GDT_PageMenu $gdt)
 	{
-	    return GWS_Message::wr16($gdt->getPage()) . 
-	       GWS_Message::wr16($gdt->getPages()) .
-	       GWS_Message::wr32($gdt->numItems) .
-	       GWS_Message::wr16($gdt->ipp);
+		return GWS_Message::wr16($gdt->getPage()) . 
+		   GWS_Message::wr16($gdt->getPages()) .
+		   GWS_Message::wr32($gdt->numItems) .
+		   GWS_Message::wr16($gdt->ipp);
 	}
 
 }
