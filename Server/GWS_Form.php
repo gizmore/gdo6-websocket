@@ -61,6 +61,8 @@ final class GWS_Form
 		{
 			if ($gdoType->isSerializable())
 			{
+// 				Logger::logWebsocket(sprintf("Reading %s as a %s.", $gdoType->name, get_class($gdoType)));
+				
 				if ($gdoType instanceof GDT_Checkbox)
 				{
 					$gdoType->value($msg->read8() > 0);
