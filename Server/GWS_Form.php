@@ -69,7 +69,7 @@ final class GWS_Form
 				}
 				elseif ($gdoType instanceof GDT_String)
 				{
-					$gdoType->value($msg->readString());
+					$gdoType->val($msg->readString());
 				}
 				elseif ( ($gdoType instanceof GDT_Decimal) ||
 						 ($gdoType instanceof GDT_Float) )
