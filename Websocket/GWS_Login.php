@@ -19,7 +19,7 @@ final class GWS_Login extends GWS_CommandForm
 	{
 		GDO_User::$CURRENT = $user = GDO_Session::instance()->getUser();
 		$user->tempSet('sess_id', GDO_Session::instance()->getID());
-		$user->recache();
+// 		$user->recache();
 		$msg->conn()->setUser($user);
 		GWS_Global::addUser($user, $msg->conn());
 		$msg->replyBinary($msg->cmd(), $this->userToBinary($user));

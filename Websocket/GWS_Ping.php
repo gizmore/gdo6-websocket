@@ -25,10 +25,7 @@ final class GWS_Ping extends GWS_Command
 	public function hookCacheInvalidate($table, $id)
 	{
 		$table = GDO::tableFor($table);
-		if ($table->cache)
-		{
-			$table->cache->uncacheID($id);
-		}
+		$table->reload($id);
 	}
 	
 	public function hookModuleVarsChanged($moduleId)

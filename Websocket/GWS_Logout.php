@@ -24,7 +24,7 @@ final class GWS_Logout extends GWS_Command
 		$msg->conn()->setUser($user);
 
 		$user->tempSet('sess_id', $sessid);
-		$user->recache();
+// 		$user->recache();
 		
 		$msg->replyBinary($msg->cmd(), $this->userToBinary($user));
 	}
