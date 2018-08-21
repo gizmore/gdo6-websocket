@@ -68,14 +68,15 @@ class GWS_Commands
 		$cmd = $message->cmd();
 		if (!isset(self::$COMMANDS[$cmd]))
 		{
-			throw new GDOError('err_gws_unknown_cmd', [$cmd]);
+			throw new GDOError('err_gws_unknown_cmd', [sprintf('0x%04X', $cmd)]);
 		}
+		$command = self::$COMMANDS[$cmd];
 		if ($session = GDO_Session::instance())
 		{
-			$session->saveVar('sess_last_url', "ws://" . get_class(self::$COMMANDS[$cmd]));
+			$session->saveVar('sess_last_url', "ws://" . get_class($command));
 		}
-		Logger::logWebsocket("Executing " . get_class(self::$COMMANDS[$cmd]));
-		return self::$COMMANDS[$cmd]->setMessage($message);
+		Logger::logWebsocket("Executing " . get_class($command));
+		return $command->setMessage($message);
 	}
 
 	################

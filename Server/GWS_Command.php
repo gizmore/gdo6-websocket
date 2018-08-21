@@ -13,7 +13,6 @@ use GDO\DB\GDT_String;
 use GDO\User\GDO_User;
 use GDO\Maps\GDT_Position;
 use GDO\Core\GDT_Secret;
-use GDO\Core\GDT;
 use GDO\Table\GDT_PageMenu;
 use GDO\DB\GDT_Float;
 /**
