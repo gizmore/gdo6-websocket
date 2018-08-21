@@ -146,7 +146,7 @@ final class GWS_Server implements MessageComponentInterface
 		{
 			$message->replyError(0x0002);
 		}
-		elseif (!GDO_Session::reload($cookie))
+		elseif (!GDO_Session::reloadCookie($cookie))
 		{
 			$message->replyError(0x0003);
 		}
