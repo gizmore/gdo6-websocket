@@ -126,7 +126,6 @@ final class GWS_Server implements MessageComponentInterface
 			try {
 				GDO_User::$CURRENT = $from->user();
 				$sessid = $from->user()->tempGet('sess_id');
-				var_dump($sessid);
 				GDO_Session::reloadID($sessid);
 				$this->handler->executeMessage($message);
 			}
