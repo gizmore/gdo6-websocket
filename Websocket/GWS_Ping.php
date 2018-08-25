@@ -34,7 +34,10 @@ final class GWS_Ping extends GWS_Command
 			$user = GDO_User::findById($id);
 			$user->tempSet('sess_id', $sessid);
 		}
-		$table->reload($id);
+		else
+		{
+			$table->reload($id);
+		}
 	}
 	
 	public function hookModuleVarsChanged($moduleId)
