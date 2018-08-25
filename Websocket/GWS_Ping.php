@@ -6,6 +6,7 @@ use GDO\Core\GDO;
 use GDO\Websocket\Server\GWS_Command;
 use GDO\Websocket\Server\GWS_Commands;
 use GDO\Websocket\Server\GWS_Message;
+use GDO\User\GDO_User;
 /**
  * Ping and ws system hooks.
  * 
@@ -25,6 +26,14 @@ final class GWS_Ping extends GWS_Command
 	public function hookCacheInvalidate($table, $id)
 	{
 		$table = GDO::tableFor($table);
+		if ($table instanceof GDO_User)
+		{
+			$user = GDO_User::findById($id);
+			$sessid = $user->tempGet('sess_id');
+			$table->reload($id);
+			$user = GDO_User::findById($id);
+			$user->tempSet('sess_id', $sessid);
+		}
 		$table->reload($id);
 	}
 	
