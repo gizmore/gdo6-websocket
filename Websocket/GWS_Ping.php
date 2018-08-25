@@ -26,17 +26,18 @@ final class GWS_Ping extends GWS_Command
 	public function hookCacheInvalidate($table, $id)
 	{
 		$table = GDO::tableFor($table);
-		if ($table instanceof GDO_User)
+		if ($object = $table->reload($id))
 		{
-			$user = GDO_User::findById($id);
-			$sessid = $user->tempGet('sess_id');
-			$table->reload($id);
-			$user = GDO_User::findById($id);
-			$user->tempSet('sess_id', $sessid);
-		}
-		else
-		{
-			$table->reload($id);
+			if ($object instanceof GDO_User)
+			{
+				$sessid = $object->tempGet('sess_id');
+				$object->tempReset();
+				$object->tempSet('sess_id', $sessid);
+			}
+			else
+			{
+				$object->tempReset();
+			}
 		}
 	}
 	
