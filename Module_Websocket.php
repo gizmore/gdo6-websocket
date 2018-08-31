@@ -95,4 +95,5 @@ window.GDO_CONFIG.ws_autoconnect = %s;',
 			$this->templatePHP('leftbar.php', ['navbar' => $navbar]);
 		}
 	}
+	
 }

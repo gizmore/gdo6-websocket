@@ -26,6 +26,7 @@ $_GET['me'] = 'Run';
 class WebsocketApplication extends Application
 {
 	public function isCLI() { return true; }
+	public function isWebsocket() { return true; }
 }
 $app = new WebsocketApplication();
 Trans::$ISO = GWF_LANGUAGE;
