@@ -12,6 +12,7 @@ use GDO\User\GDO_User;
  * 
  * 1. hook cache invalidation
  * 2. hook module vars changed
+ * 3. hook user settings changed
  * 
  * @author gizmore
  *
@@ -23,28 +24,42 @@ final class GWS_Ping extends GWS_Command
 		$msg->replyBinary(0x0105); # Reply pong
 	}
 	
+	public function hookModuleVarsChanged($moduleId)
+	{
+		ModuleLoader::instance()->initModuleVars();
+	}
+	
+	public function hookUserSettingChange($userId, $key, $value)
+	{
+		if (GDO_User::table()->cache->hasID($userId))
+		{
+			$this->tempReset(GDO_User::findById($userId));
+		}
+	}
+	
 	public function hookCacheInvalidate($table, $id)
 	{
 		$table = GDO::tableFor($table);
 		if ($object = $table->reload($id))
 		{
-			if ($object instanceof GDO_User)
-			{
-				$sessid = $object->tempGet('sess_id');
-				$object->tempReset();
-				$object->tempSet('sess_id', $sessid);
-			}
-			else
-			{
-				$object->tempReset();
-			}
+			$this->tempReset($object);
 		}
 	}
 	
-	public function hookModuleVarsChanged($moduleId)
+	private function tempReset(GDO $gdo)
 	{
-		ModuleLoader::instance()->initModuleVars();
+		if ($gdo instanceof GDO_User)
+		{
+			$sessid = $gdo->tempGet('sess_id');
+			$gdo->tempReset();
+			$gdo->tempSet('sess_id', $sessid);
+		}
+		else
+		{
+			$gdo->tempReset();
+		}
 	}
+	
 }
 
 GWS_Commands::register(0x0105, new GWS_Ping());
