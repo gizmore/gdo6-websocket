@@ -15,7 +15,7 @@ final class GWS_Setting extends GWS_Command
 		{
 			return $msg->replyErrorMessage($msg->cmd(), t('err_unknown_setting'));
 		}
-		if ($value === $setting->initial)
+		if ($value === $setting->var)
 		{
 			return $msg->replyErrorMessage($msg->cmd(), t('err_setting_unchanged'));
 		}
