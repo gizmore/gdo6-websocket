@@ -10,6 +10,7 @@ use GDO\Websocket\Server\GWS_Commands;
 use GDO\Websocket\Server\GWS_Message;
 use GDO\Websocket\Server\GWS_Global;
 use GDO\Login\Method\Form;
+use GDO\Core\Module_Core;
 
 final class GWS_Login extends GWS_CommandForm
 {
@@ -22,7 +23,7 @@ final class GWS_Login extends GWS_CommandForm
 // 		$user->recache();
 		$msg->conn()->setUser($user);
 		GWS_Global::addUser($user, $msg->conn());
-		$msg->replyBinary($msg->cmd(), $this->userToBinary($user));
+		$msg->replyText($msg->cmd(), json_encode(Module_Core::instance()->gdoUserJSON()));
 	}
 }
 

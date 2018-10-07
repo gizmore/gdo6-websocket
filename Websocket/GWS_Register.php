@@ -3,6 +3,7 @@ namespace GDO\Websocket\Websocket;
 
 use GDO\Form\GDT_Form;
 use GDO\Core\GDT_Response;
+use GDO\Core\Module_Core;
 use GDO\Websocket\Server\GWS_CommandForm;
 use GDO\Websocket\Server\GWS_Commands;
 use GDO\Websocket\Server\GWS_Message;
@@ -28,7 +29,7 @@ final class GWS_Register extends GWS_CommandForm
 			$msg->conn()->setUser($user);
 			GWS_Global::addUser($user, $msg->conn());
 		}
-		$msg->replyBinary($msg->cmd(), $this->userToBinary(GDO_User::current()));
+		$msg->replyText($msg->cmd(), json_encode(Module_Core::instance()->gdoUserJSON()));
 	}
 }
 

@@ -7,6 +7,7 @@ use GDO\Websocket\Server\GWS_Command;
 use GDO\Websocket\Server\GWS_Commands;
 use GDO\Websocket\Server\GWS_Global;
 use GDO\Websocket\Server\GWS_Message;
+use GDO\Core\Module_Core;
 use GDO\Login\Method\Logout;
 use GDO\Websocket\Server\GWS_Server;
 
@@ -26,7 +27,7 @@ final class GWS_Logout extends GWS_Command
 		$user->tempSet('sess_id', $sessid);
 // 		$user->recache();
 		
-		$msg->replyBinary($msg->cmd(), $this->userToBinary($user));
+		$msg->replyText($msg->cmd(), json_encode(Module_Core::instance()->gdoUserJSON()));
 	}
 }
 

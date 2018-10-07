@@ -3,6 +3,7 @@ namespace GDO\Websocket\Websocket;
 
 use GDO\Form\GDT_Form;
 use GDO\Core\GDT_Response;
+use GDO\Core\Module_Core;
 use GDO\User\GDO_Session;
 use GDO\User\GDO_User;
 use GDO\Websocket\Server\GWS_CommandForm;
@@ -22,7 +23,7 @@ final class GWS_AsGuest extends GWS_CommandForm
 		$user->tempSet('sess_id', GDO_Session::instance()->getID());
 		$msg->conn()->setUser($user);
 		GWS_Global::addUser($user, $msg->conn());
-		$msg->replyBinary($msg->cmd(), $this->userToBinary($user));
+		$msg->replyText($msg->cmd(), json_encode(Module_Core::instance()->gdoUserJSON()));
 	}
 }
 
