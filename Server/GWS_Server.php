@@ -37,7 +37,7 @@ final class GWS_Server implements MessageComponentInterface
 		self::$INSTANCE = $this;
 		if (GWF_IPC)
 		{
-			for ($i = 1; $i < GWF_IPC; $i++)
+			for ($i = 1; $i <= GWF_IPC; $i++)
 			{
 				msg_remove_queue(msg_get_queue($i));
 			}
