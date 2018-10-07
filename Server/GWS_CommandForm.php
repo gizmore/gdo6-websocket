@@ -10,6 +10,7 @@ use GDO\DB\GDT_Int;
 use GDO\Core\GDT_JSONResponse;
 use GDO\Core\GDT;
 use GDO\Core\GDOException;
+use GDO\Core\GDT_Success;
 /**
  * Call MethodForm via websockets.
  * @author gizmore
@@ -99,6 +100,10 @@ abstract class GWS_CommandForm extends GWS_Command
 		elseif ($gdoType instanceof GDT_Int)
 		{
 			$payload .= GWS_Message::wrN($gdoType->bytes, $gdoType->getValue());
+		}
+		elseif ($gdoType instanceof GDT_Success)
+		{
+			$payload .= GWS_Message::wrS($gdoType->html);
 		}
 		return $payload;
 	}

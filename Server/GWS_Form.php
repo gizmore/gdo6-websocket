@@ -13,6 +13,8 @@ use GDO\Core\GDT;
 use GDO\Core\Logger;
 use GDO\Core\GDOException;
 use GDO\DB\GDT_Float;
+use GDO\DB\GDT_Enum;
+use GDO\Date\GDT_Timestamp;
 /**
  * Fill a GDT_Form with a GWS_Message.
  * Fill a Method with a GWS_Message.
@@ -84,6 +86,24 @@ final class GWS_Form
 				{
 					$gdoType->value($msg->readN($gdoType->bytes, !$gdoType->unsigned));
 				}
+				elseif ($gdoType instanceof GDT_Enum)
+				{
+					$gdoType->val($gdoType->enumForId($msg->read8u()));
+				}
+				elseif ($gdoType instanceof GDT_Timestamp)
+				{
+					$ts = $msg->read32u();
+					if ($ts)
+					{
+						$gdoType->value($ts);
+					}
+					else
+					{
+						$gdoType->val(null);
+					}
+				}
+// 				Logger::logWebsocket(sprintf("Reading %s as a %s for %s.", $gdoType->name, get_class($gdoType), $gdoType->var));
+				
 			}
 		}
 		catch (GDOException $ex)
