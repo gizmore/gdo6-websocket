@@ -152,15 +152,15 @@ final class GWS_Global
 	
 	public static function send(GDO_User $user, $payload)
 	{
-		if ($conn = self::$CONNECTIONS[$user->getID()])
+		if ($conn = @self::$CONNECTIONS[$user->getID()])
 		{
-			Logger::logWebsocket(sprintf("%s << %s", $user->displayName(), $payload));
+			Logger::logWebsocket(sprintf("%s << %s", $user->displayNameLabel(), $payload));
 			$conn->send($payload);
 			return true;
 		}
 		else
 		{
-			Logger::logError(sprintf('GDO_User %s not connected.', $user->displayName()));
+			Logger::logError(sprintf('GDO_User %s not connected.', $user->displayNameLabel()));
 			return false;
 		}
 	}
@@ -169,7 +169,7 @@ final class GWS_Global
 	{
 		if ($conn = @self::$CONNECTIONS[$user->getID()])
 		{
-			Logger::logWebsocket(sprintf("%s << BIN", $user->displayName()));
+			Logger::logWebsocket(sprintf("%s << BIN", $user->displayNameLabel()));
 			GWS_Message::hexdump($payload);
 			$conn->sendBinary($payload);
 			return true;

@@ -2,6 +2,7 @@
 namespace GDO\Websocket\Server;
 use GDO\Core\Debug;
 use GDO\Core\Logger;
+use GDO\Core\Module_Core;
 use GDO\File\Filewalker;
 use GDO\Net\GDT_IP;
 use GDO\User\GDO_Session;
@@ -160,7 +161,7 @@ final class GWS_Server implements MessageComponentInterface
 			$conn = $message->conn();
 			$user->tempSet('sess_id', GDO_Session::instance()->getID());
 			GWS_Global::addUser($user, $conn);
-			$message->replyText('AUTH', json_encode($user->getVars(['user_id', 'user_type', 'user_name', 'user_real_name', 'user_guest_name', 'user_credits'])));
+			$message->replyText('AUTH', json_encode(Module_Core::instance()->gdoUserJSON()));
 			$this->handler->connect($user);
 		}
 	}
