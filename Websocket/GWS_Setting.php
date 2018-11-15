@@ -4,6 +4,7 @@ use GDO\Websocket\Server\GWS_Message;
 use GDO\Websocket\Server\GWS_Command;
 use GDO\User\GDO_UserSetting;
 use GDO\Websocket\Server\GWS_Commands;
+use GDO\Core\Logger;
 
 final class GWS_Setting extends GWS_Command
 {
@@ -19,10 +20,14 @@ final class GWS_Setting extends GWS_Command
 		{
 			return $msg->replyErrorMessage($msg->cmd(), t('err_setting_unchanged'));
 		}
-		if (!$setting->validate($setting->toValue($value)))
+		
+		$value = $setting->toValue($value);
+		if (!$setting->validate($value))
 		{
 			return $msg->replyErrorMessage($msg->cmd(), t('err_setting_validate', [$setting->error]));
 		}
+		
+		Logger::logWebsocket("Writing Setting $key to $value");
 		
 		GDO_UserSetting::set($key, $value);
 		return $msg->replyBinary($msg->cmd());
