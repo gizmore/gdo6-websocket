@@ -42,7 +42,8 @@ final class GWS_Server implements MessageComponentInterface
 			{
 				msg_remove_queue(msg_get_queue($i));
 			}
-			$this->ipc = msg_get_queue(GWF_IPC);
+			$key = ftok(GWF_PATH.'temp/ipc.socket', 'G');
+			$this->ipc = msg_get_queue($key);
 		}
 	}
 	
