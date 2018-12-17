@@ -42,9 +42,14 @@ final class GWS_Server implements MessageComponentInterface
 			{
 				msg_remove_queue(msg_get_queue($i));
 			}
-			$key = ftok(GWF_PATH.'temp/ipc.socket', 'G');
-			$this->ipc = msg_get_queue($key);
+			$this->initIPC();
 		}
+	}
+	
+	public function initIPC()
+	{
+		$key = ftok(GWF_PATH.'temp/ipc.socket', 'G');
+		$this->ipc = msg_get_queue($key);
 	}
 	
 	public function mainloop($timerInterval=0)
@@ -63,16 +68,25 @@ final class GWS_Server implements MessageComponentInterface
 	
 	public function ipcTimer()
 	{
-		$message = null; $messageType = 0;
-		msg_receive($this->ipc, GWF_IPC, $messageType, 1000000, $message, true, MSG_IPC_NOWAIT);
-		if ($message)
+		$message = null; $messageType = 0; $error = 0;
+		if (msg_receive($this->ipc, 0x612, $messageType, 65535, $message, true, MSG_IPC_NOWAIT, $error))
 		{
-			try {
-				GWS_Commands::webHook($message);
-			} catch (\Exception $ex) {
-				Logger::logException($ex);
+			if ($message)
+			{
+				try {
+					GWS_Commands::webHook($message);
+				} catch (\Exception $ex) {
+					Logger::logException($ex);
+				}
+				$this->ipcTimer();
 			}
-			$this->ipcTimer();
+		}
+		if ($error)
+		{
+			Logger::logError("IPC msg_receive failed with code: $error");
+			msg_remove_queue($this->ipc);
+			$this->ipc = null;
+			$this->initIPC();
 		}
 	}
 	
