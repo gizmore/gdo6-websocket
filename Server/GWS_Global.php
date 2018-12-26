@@ -17,8 +17,12 @@ final class GWS_Global
 	##################
 	public static function addUser(GDO_User $user, $conn)
 	{
-		self::$USERS[$user->getID()] = $user;
-		self::$CONNECTIONS[$user->getID()] = $conn;
+// 		Logger::logWebsocket("GWS_Global.addUser({$user->getID()})");
+		if ($user->isPersisted())
+		{
+			self::$USERS[$user->getID()] = $user;
+			self::$CONNECTIONS[$user->getID()] = $conn;
+		}
 	}
 	
 	public static function removeUser(GDO_User $user, $reason='NO_REASON')
