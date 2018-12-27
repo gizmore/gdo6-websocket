@@ -102,28 +102,28 @@ final class GWS_Server implements MessageComponentInterface
 	{
 		die('NON BINARY MESSAGE NOT SUPPORTED ANYMORE');
 		
-		printf("%s >> %s\n", $from->user() ? $from->user()->displayName() : '???', $data);
-		$message = new GWS_Message($data, $from);
-		$message->readTextCmd();
-		if ($from->user())
-		{
-			GDT_IP::$CURRENT = $from->getRemoteAddress();
-			GDO_User::$CURRENT = $from->user();
-			GDO_Session::reloadID($from->user()->tempGet('sess_id'));
-			try
-			{
-				$this->handler->executeMessage($message);
-			}
-			catch (Exception $e)
-			{
-				Logger::logException($e);
-				$message->replyErrorMessage($message->cmd(), $e->getMessage());
-			}
-		}
-		else
-		{
-			$message->replyError(0x0002);
-		}
+// 		printf("%s >> %s\n", $from->user() ? $from->user()->displayName() : '???', $data);
+// 		$message = new GWS_Message($data, $from);
+// 		$message->readTextCmd();
+// 		if ($from->user())
+// 		{
+// 			GDT_IP::$CURRENT = $from->getRemoteAddress();
+// 			GDO_User::$CURRENT = $from->user();
+// 			GDO_Session::reloadID($from->user()->tempGet('sess_id'));
+// 			try
+// 			{
+// 				$this->handler->executeMessage($message);
+// 			}
+// 			catch (Exception $e)
+// 			{
+// 				Logger::logException($e);
+// 				$message->replyErrorMessage($message->cmd(), $e->getMessage());
+// 			}
+// 		}
+// 		else
+// 		{
+// 			$message->replyError(0x0002);
+// 		}
 	}
 	
 	public function onBinaryMessage(ConnectionInterface $from, $data)
@@ -172,8 +172,8 @@ final class GWS_Server implements MessageComponentInterface
 		}
 		else
 		{
-			$message->conn()->setUser($user);
 			$conn = $message->conn();
+			$conn->setUser($user);
 			$user->tempSet('sess_id', GDO_Session::instance()->getID());
 			GWS_Global::addUser($user, $conn);
 			$message->replyText('AUTH', json_encode(Module_Core::instance()->gdoUserJSON()));

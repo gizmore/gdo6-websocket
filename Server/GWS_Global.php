@@ -17,7 +17,7 @@ final class GWS_Global
 	##################
 	public static function addUser(GDO_User $user, $conn)
 	{
-// 		Logger::logWebsocket("GWS_Global.addUser({$user->getID()})");
+		Logger::logWebsocket("GWS_Global.addUser({$user->getID()})");
 		if ($user->isPersisted())
 		{
 			self::$USERS[$user->getID()] = $user;
