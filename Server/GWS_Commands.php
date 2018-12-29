@@ -39,13 +39,13 @@ class GWS_Commands
 	
 	public static function webHook(array $hookData)
 	{
-		list($event, $args) = $hookData;
+		$event = array_shift($hookData);
 		$method_name = "hook$event";
 		foreach (self::$COMMANDS as $command)
 		{
 			if (method_exists($command, $method_name))
 			{
-				call_user_func([$command, $method_name], ...$args);
+				call_user_func([$command, $method_name], ...$hookData);
 			}
 		}
 	}

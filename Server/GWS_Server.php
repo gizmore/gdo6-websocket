@@ -74,6 +74,7 @@ final class GWS_Server implements MessageComponentInterface
 			if ($message)
 			{
 				try {
+					Logger::logWebsocket("calling webHook: ".json_encode($message));
 					GWS_Commands::webHook($message);
 				} catch (\Exception $ex) {
 					Logger::logException($ex);
