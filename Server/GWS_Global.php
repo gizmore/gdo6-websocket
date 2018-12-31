@@ -17,11 +17,16 @@ final class GWS_Global
 	##################
 	public static function addUser(GDO_User $user, $conn)
 	{
-		Logger::logWebsocket("GWS_Global.addUser({$user->getID()})");
+// 		Logger::logWebsocket("GWS_Global.addUser({$user->getID()})");
 		if ($user->isPersisted())
 		{
+			if (isset(self::$CONNECTIONS[$user->getID()]))
+			{
+				GWS_Global::disconnect($user, t('err_was_already_connected'));
+			}
 			self::$USERS[$user->getID()] = $user;
 			self::$CONNECTIONS[$user->getID()] = $conn;
+			GWS_Server::instance()->getHandler()->connect($user);
 		}
 	}
 	
@@ -116,12 +121,15 @@ final class GWS_Global
 	##################
 	### Connection ###
 	##################
-	public static function disconnect(GDO_User $user, $reason="NO_REASON")
+	public static function disconnect(GDO_User $user, $reason="no_reason")
 	{
 		if ($conn = @self::$CONNECTIONS[$user->getID()])
 		{
+			GWS_Server::instance()->getHandler()->disconnect($user);
 			$conn->send("CLOSE:".$reason);
+			unset(self::$USERS[$user->getID()]);
 			unset(self::$CONNECTIONS[$user->getID()]);
+			$conn->close();
 		}
 	}
 

@@ -15,8 +15,7 @@ use GDO\Maps\GDT_Position;
 use GDO\Core\GDT_Secret;
 use GDO\Table\GDT_PageMenu;
 use GDO\DB\GDT_Float;
-use GDO\Date\GDT_Date;
-use GDO\Date\GDT_DateTime;
+use GDO\Core\GDOException;
 /**
  * GWS_Commands have to register via GWS_Commands::register($code, GWS_Command, $binary=true)
  * @author gizmore
@@ -79,10 +78,6 @@ abstract class GWS_Command
 				$value = array_search($gdo->getVar($field->name), $field->enumValues);
 				$payload .= GWS_Message::wr8($value === false ? 0 : $value + 1);
 			}
-// 			elseif ( ($field instanceof GDT_Date) || ($field instanceof GDT_DateTime ) )
-// 			{
-// 				$payload .= GWS_Message::wrS($gdo->getVar($field->name));
-// 			}
 			elseif ($field instanceof GDT_Timestamp)
 			{
 				$time = 0;
@@ -99,7 +94,7 @@ abstract class GWS_Command
 			}
 			else
 			{
-				die("Cannot ws encode {$field->name}");
+				throw new GDOException("Cannot ws encode {$field->name}");
 			}
 		}
 		return $payload;

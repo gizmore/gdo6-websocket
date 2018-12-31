@@ -173,12 +173,13 @@ final class GWS_Server implements MessageComponentInterface
 		}
 		else
 		{
+			# Connect user
 			$conn = $message->conn();
 			$conn->setUser($user);
 			$user->tempSet('sess_id', GDO_Session::instance()->getID());
-			GWS_Global::addUser($user, $conn);
 			$message->replyText('AUTH', json_encode(Module_Core::instance()->gdoUserJSON()));
-			$this->handler->connect($user);
+			# Add with event
+			GWS_Global::addUser($user, $conn);
 		}
 	}
 	
@@ -189,7 +190,6 @@ final class GWS_Server implements MessageComponentInterface
 		{
 			$conn->setUser(false);
 			GWS_Global::removeUser($user);
-			$this->handler->disconnect($user);
 		}
 	}
 	
@@ -249,5 +249,13 @@ final class GWS_Server implements MessageComponentInterface
 // 				),
 // 			);
 // 		}
+	}
+	
+	/**
+	 * @return \GDO\Websocket\Server\GWS_Commands
+	 */
+	public function getHandler()
+	{
+		return $this->handler;
 	}
 }

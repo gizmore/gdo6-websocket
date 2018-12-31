@@ -158,9 +158,9 @@ final class GWS_Message
 	 * @param boolean $binary
 	 * @return string
 	 */
-	public static function payload($cmd, $binary=true)
+	public static function payload($cmd, $isBinary=true)
 	{
-		return $binary ? self::wr16($cmd) : "$cmd:";
+		return $isBinary ? self::wr16($cmd) : "$cmd:";
 	}
 	
 	##############
