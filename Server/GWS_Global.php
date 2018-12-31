@@ -36,7 +36,8 @@ final class GWS_Global
 		if (isset(self::$USERS[$key]))
 		{
 			unset(self::$USERS[$key]);
-			GWS_Global::disconnect($user, $reason);
+			unset(self::$CONNECTIONS[$key]);
+// 			GWS_Global::disconnect($user, $reason);
 		}
 	}
 	
