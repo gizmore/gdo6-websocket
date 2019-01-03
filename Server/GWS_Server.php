@@ -16,6 +16,8 @@ use Ratchet\WebSocket\WsServer;
 use Exception;
 use GDO\Core\ModuleLoader;
 use GDO\Core\WithInstance;
+use GDO\Core\GDO_Hook;
+use GDO\Core\GDO;
 
 include 'GWS_Message.php';
 
@@ -36,7 +38,11 @@ final class GWS_Server implements MessageComponentInterface
 	public function __construct()
 	{
 		self::$INSTANCE = $this;
-		if (GWF_IPC)
+		if (GWF_IPC === 'db')
+		{
+			# all fine
+		}
+		elseif (GWF_IPC)
 		{
 			for ($i = 1; $i < GWF_IPC; $i++)
 			{
@@ -59,12 +65,37 @@ final class GWS_Server implements MessageComponentInterface
 		{
 			$this->server->loop->addPeriodicTimer($timerInterval/1000.0, [$this->handler, 'timer']);
 		}
-		if (GWF_IPC)
+
+		# IPC timer
+		if (GWF_IPC === 'db')
+		{
+			# 3 seconds db poll alternative
+			$this->server->loop->addPeriodicTimer(3.00, [$this, 'ipcdbTimer']);
+		}
+		elseif (GWF_IPC)
 		{
 			$this->server->loop->addPeriodicTimer(0.250, [$this, 'ipcTimer']);
 		}
 		$this->server->run();
 	}
+	
+	/**
+	 * Poll a message and delete it afterwards.
+	 */
+	public function ipcdbTimer()
+	{
+		if ($message = GDO_Hook::table()->select()->first()->exec()->fetchValue())
+		{
+			try {
+				GWS_Commands::webHookDB($message);
+			} catch (\Exception $ex) {
+				Logger::logException($ex);
+			}
+			GDO_Hook::table()->deleteWhere("hook_message=".GDO::quoteS($message))->exec();
+			$this->ipcdbTimer();
+		}
+	}
+	
 	
 	public function ipcTimer()
 	{

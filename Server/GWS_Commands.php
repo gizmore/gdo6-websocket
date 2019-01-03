@@ -37,6 +37,19 @@ class GWS_Commands
 		self::$COMMANDS[$code] = $command;
 	}
 	
+	public static function webHookDB($message)
+	{
+		$message = json_decode($message, true);
+		$event = $message['event'];
+		$args = $message['args'];
+		$param = [$event];
+		if ($args)
+		{
+			$param = array_merge($param, $args);
+		}
+		return self::webHook($param);
+	}
+	
 	public static function webHook(array $hookData)
 	{
 		$event = array_shift($hookData);
