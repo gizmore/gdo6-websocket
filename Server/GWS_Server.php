@@ -219,6 +219,7 @@ final class GWS_Server implements MessageComponentInterface
 		Logger::logCron(sprintf("GWS_Server::onClose()"));
 		if ($user = $conn->user())
 		{
+			$this->handler->disconnect($user);
 			$conn->setUser(false);
 			GWS_Global::removeUser($user);
 		}
