@@ -7,6 +7,7 @@ use GDO\Websocket\Server\GWS_Command;
 use GDO\Websocket\Server\GWS_Commands;
 use GDO\Websocket\Server\GWS_Message;
 use GDO\User\GDO_User;
+use GDO\Websocket\Server\GWS_Global;
 /**
  * Ping and ws system hooks.
  * 
@@ -35,6 +36,11 @@ final class GWS_Ping extends GWS_Command
 		{
 			$this->tempReset(GDO_User::findById($userId));
 		}
+	}
+	
+	public function hookUserDeleted($userId)
+	{
+		GWS_Global::disconnect(GDO_User::findById($userId), "User deleted");
 	}
 	
 	public function hookCacheInvalidate($table, $id)
