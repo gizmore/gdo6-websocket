@@ -172,6 +172,7 @@ final class GWS_Server implements MessageComponentInterface
 		else
 		{
 			try {
+				$_REQUEST = array(); # start with a blank request emulation
 				GDO_User::$CURRENT = $from->user();
 				$sessid = $from->user()->tempGet('sess_id');
 				GDO_Session::reloadID($sessid);
@@ -188,19 +189,19 @@ final class GWS_Server implements MessageComponentInterface
 	{
 		if ($message->cmd() !== 0x0001)
 		{
-			$message->replyError(0x0001);
+			$message->replyErrorMessage(0x0001, "Wrong authentication command");
 		}
 		elseif (!($cookie = $message->readString()))
 		{
-			$message->replyError(0x0002);
+			$message->replyErrorMessage(0x0002, "No cookie was sent");
 		}
 		elseif (!GDO_Session::reloadCookie($cookie))
 		{
-			$message->replyError(0x0003);
+			$message->replyErrorMessage(0x0003, "Could not load session");
 		}
 		elseif (!($user = GDO_User::current()))
 		{
-			$message->replyError(0x0004);
+			$message->replyError(0x0004, "Cannot load user for session");
 		}
 		else
 		{
