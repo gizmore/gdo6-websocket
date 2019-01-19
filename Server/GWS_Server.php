@@ -172,7 +172,7 @@ final class GWS_Server implements MessageComponentInterface
 		else
 		{
 			try {
-				$_REQUEST = array(); # start with a blank request emulation
+				$_REQUEST = array('fmt'=>'ws'); # start with a blank request emulation
 				GDO_User::$CURRENT = $from->user();
 				$sessid = $from->user()->tempGet('sess_id');
 				GDO_Session::reloadID($sessid);
