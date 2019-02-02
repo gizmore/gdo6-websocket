@@ -18,6 +18,8 @@ use GDO\Core\ModuleLoader;
 use GDO\Core\WithInstance;
 use GDO\Core\GDO_Hook;
 use GDO\Core\GDO;
+use GDO\Language\GDT_Language;
+use GDO\Language\Trans;
 
 include 'GWS_Message.php';
 
@@ -173,9 +175,14 @@ final class GWS_Server implements MessageComponentInterface
 		{
 			try {
 				$_REQUEST = array('fmt'=>'ws'); # start with a blank request emulation
-				GDO_User::$CURRENT = $from->user();
-				$sessid = $from->user()->tempGet('sess_id');
+				/**
+				 * @var GDO_User $user
+				 */
+				$user = GDO_User::$CURRENT = $from->user();
+				$sessid = $user->tempGet('sess_id');
 				GDO_Session::reloadID($sessid);
+				$langISO = $user->tempGet('lang_iso');
+				Trans::$ISO = $langISO ? $langISO : $user->getLangISO();
 				$this->handler->executeMessage($message);
 			}
 			catch (Exception $e) {
