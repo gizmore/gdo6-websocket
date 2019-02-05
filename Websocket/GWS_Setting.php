@@ -5,6 +5,8 @@ use GDO\Websocket\Server\GWS_Command;
 use GDO\User\GDO_UserSetting;
 use GDO\Websocket\Server\GWS_Commands;
 use GDO\Core\Logger;
+use GDO\Avatar\Method\Gallery;
+use GDO\Core\GDO;
 
 final class GWS_Setting extends GWS_Command
 {
@@ -28,6 +30,12 @@ final class GWS_Setting extends GWS_Command
 		}
 		
 		Logger::logWebsocket("Writing Setting $key to $value");
+		
+		# XXX: Ugly fix.
+		if ($value instanceof GDO)
+		{
+			$value = $value->getID();
+		}
 		
 		GDO_UserSetting::set($key, $value);
 		return $msg->replyBinary($msg->cmd());
