@@ -72,6 +72,7 @@ final class GWS_Server implements MessageComponentInterface
 		if (GWF_IPC === 'db')
 		{
 			# 3 seconds db poll alternative
+			GDO_Hook::table()->truncate();
 			$this->server->loop->addPeriodicTimer(3.00, [$this, 'ipcdbTimer']);
 		}
 		elseif (GWF_IPC)
