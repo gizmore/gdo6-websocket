@@ -42,7 +42,7 @@ final class Module_Websocket extends GDO_Module
 		);
 	}
 	public function cfgAutoConnect() { return $this->getConfigValue('ws_autoconnect'); }
-	public function cfgUrl() { return $this->getConfigValue('ws_url'); }
+	public function cfgUrl() { return $this->getConfigVar('ws_url'); }
 	public function cfgPort() { return $this->getConfigValue('ws_port'); }
 	public function cfgTimer() { return $this->getConfigValue('ws_timer'); }
 	public function cfgWebsocketProcessorPath() { return $this->getConfigValue('ws_processor'); }
