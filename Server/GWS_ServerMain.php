@@ -47,6 +47,7 @@ include $gws->cfgWebsocketProcessorPath();
 
 $processor = $gws->processorClass();
 
+
 $server = new GWS_Server();
 if (GWF_IPC && (GWF_IPC !== 'db') )
 {
