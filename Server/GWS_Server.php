@@ -183,7 +183,8 @@ final class GWS_Server implements MessageComponentInterface
 				$sessid = $user->tempGet('sess_id');
 				GDO_Session::reloadID($sessid);
 				$langISO = $user->tempGet('lang_iso');
-				Trans::$ISO = $langISO ? $langISO : $user->getLangISO();
+				$langISO = $langISO ? $langISO : $user->getLangISO();
+				Trans::setISO($langISO);
 				$this->handler->executeMessage($message);
 			}
 			catch (Exception $e) {
