@@ -56,7 +56,7 @@ final class GWS_Server implements MessageComponentInterface
 	
 	public function initIPC()
 	{
-		$key = ftok(GWF_PATH.'temp/ipc.socket', 'G');
+		$key = ftok(GDO_PATH.'temp/ipc.socket', 'G');
 		$this->ipc = msg_get_queue($key);
 	}
 	
