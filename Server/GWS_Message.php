@@ -1,6 +1,7 @@
 <?php
 namespace GDO\Websocket\Server;
 
+use GDO\Core\Application;
 use GDO\Core\Logger;
 use GDO\User\GDO_User;
 use GDO\Core\GDOException;
@@ -185,7 +186,7 @@ final class GWS_Message
 	public static function wrF($float) { return pack("f", floatval($float)); }
 	public static function wrD($double) { return pack("d", doubleval($double)); }
 	public static function wrS($string) { return urlencode($string)."\0"; }
-	public static function wrTS() { return self::wr32(time()); }
+	public static function wrTS() { return self::wr32(Application::$TIME); }
 	public static function wrN($bytes, $value)
 	{
 		$value = (int)$value;

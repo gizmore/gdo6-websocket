@@ -20,6 +20,7 @@ use GDO\Core\GDO_Hook;
 use GDO\Core\GDO;
 use GDO\Language\GDT_Language;
 use GDO\Language\Trans;
+use GDO\Core\Application;
 
 include 'GWS_Message.php';
 
@@ -87,7 +88,8 @@ final class GWS_Server implements MessageComponentInterface
 	 */
 	public function ipcdbTimer()
 	{
-		if ($message = GDO_Hook::table()->select()->first()->exec()->fetchValue())
+	    Application::updateTime();
+	    if ($message = GDO_Hook::table()->select()->first()->exec()->fetchValue())
 		{
 			try {
 				GWS_Commands::webHookDB($message);
@@ -102,7 +104,8 @@ final class GWS_Server implements MessageComponentInterface
 	
 	public function ipcTimer()
 	{
-		$message = null; $messageType = 0; $error = 0;
+	    Application::updateTime();
+	    $message = null; $messageType = 0; $error = 0;
 		if (msg_receive($this->ipc, 0x612, $messageType, 65535, $message, true, MSG_IPC_NOWAIT, $error))
 		{
 			if ($message)
@@ -165,6 +168,7 @@ final class GWS_Server implements MessageComponentInterface
 	{
 		printf("%s >> BIN\n", $from->user() ? $from->user()->displayNameLabel() : '???');
 		GDT_IP::$CURRENT = $from->getRemoteAddress();
+		Application::updateTime();
 		echo GWS_Message::hexdump($data);
 		$message = new GWS_Message($data, $from);
 		$message->readCmd();
