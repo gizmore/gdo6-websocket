@@ -71,7 +71,7 @@ final class GWS_Form
 				}
 				elseif ($gdoType instanceof GDT_String)
 				{
-					$gdoType->val($msg->readString());
+					$gdoType->var($msg->readString());
 				}
 				elseif ( ($gdoType instanceof GDT_Decimal) ||
 						 ($gdoType instanceof GDT_Float) )
@@ -80,7 +80,7 @@ final class GWS_Form
 				}
 				elseif ($gdoType instanceof GDT_Object)
 				{
-					$gdoType->val($msg->read32u());
+					$gdoType->var($msg->read32u());
 				}
 				elseif ($gdoType instanceof GDT_Int)
 				{
@@ -88,7 +88,7 @@ final class GWS_Form
 				}
 				elseif ($gdoType instanceof GDT_Enum)
 				{
-					$gdoType->val($gdoType->enumForId($msg->read8u()));
+					$gdoType->var($gdoType->enumForId($msg->read8u()));
 				}
 				elseif ($gdoType instanceof GDT_Timestamp)
 				{
@@ -99,7 +99,7 @@ final class GWS_Form
 					}
 					else
 					{
-						$gdoType->val(null);
+						$gdoType->var(null);
 					}
 				}
 // 				Logger::logWebsocket(sprintf("Reading %s as a %s for %s.", $gdoType->name, get_class($gdoType), $gdoType->var));
