@@ -28,7 +28,7 @@ abstract class GWS_CommandForm extends GWS_Command
 	
 	public function execute(GWS_Message $msg)
 	{
-		$_POST = []; $_REQUEST = []; $_FILES = [];
+	    $_GET = []; $_POST = []; $_REQUEST = []; $_FILES = [];
 		$method = $this->getMethod();
 		$this->fillRequestVars($msg);
 		
