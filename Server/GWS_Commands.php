@@ -4,7 +4,7 @@ namespace GDO\Websocket\Server;
 use GDO\Core\GDOError;
 use GDO\User\GDO_User;
 use GDO\Core\Logger;
-use GDO\User\GDO_Session;
+use GDO\Session\GDO_Session;
 
 include 'GWS_Command.php';
 include 'GWS_CommandForm.php';

@@ -6,7 +6,7 @@ use GDO\Core\GDT_Response;
 use GDO\Websocket\Server\GWS_CommandForm;
 use GDO\Websocket\Server\GWS_Commands;
 use GDO\Websocket\Server\GWS_Message;
-use GDO\User\GDO_Session;
+use GDO\Session\GDO_Session;
 use GDO\User\GDO_User;
 use GDO\Register\Module_Register;
 use GDO\Websocket\Server\GWS_Global;

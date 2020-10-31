@@ -5,7 +5,7 @@ use GDO\Core\Debug;
 use GDO\Core\ModuleLoader;
 use GDO\DB\Database;
 use GDO\Language\Trans;
-use GDO\User\GDO_Session;
+use GDO\Session\GDO_Session;
 use GDO\Websocket\Module_Websocket;
 use GDO\Websocket\Server\GWS_Server;
 

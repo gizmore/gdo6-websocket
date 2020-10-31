@@ -1,7 +1,7 @@
 <?php
 namespace GDO\Websocket\Websocket;
 
-use GDO\User\GDO_Session;
+use GDO\Session\GDO_Session;
 use GDO\User\GDO_User;
 use GDO\Websocket\Server\GWS_Command;
 use GDO\Websocket\Server\GWS_Commands;

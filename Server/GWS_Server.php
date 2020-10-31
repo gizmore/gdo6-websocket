@@ -5,7 +5,7 @@ use GDO\Core\Logger;
 use GDO\Core\Module_Core;
 use GDO\File\Filewalker;
 use GDO\Net\GDT_IP;
-use GDO\User\GDO_Session;
+use GDO\Session\GDO_Session;
 use GDO\User\GDO_User;
 use GDO\Websocket\Module_Websocket;
 use Ratchet\MessageComponentInterface;
