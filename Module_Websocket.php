@@ -5,19 +5,20 @@ use GDO\Core\GDO_Module;
 use GDO\Date\GDT_Duration;
 use GDO\File\GDT_Path;
 use GDO\Net\GDT_Url;
-use GDO\UI\GDT_Bar;
 use GDO\DB\GDT_Checkbox;
 use GDO\DB\GDT_Int;
 use GDO\Session\GDO_Session;
 use GDO\Util\Javascript;
 use GDO\Util\Strings;
+use GDO\UI\GDT_Page;
+
 /**
  * Websocket server module.
  * 
  * @author gizmore
  * 
- * @since 4.1
- * @version 5.0
+ * @version 6.10
+ * @since 6.05
  */
 final class Module_Websocket extends GDO_Module
 {
@@ -39,6 +40,7 @@ final class Module_Websocket extends GDO_Module
 			GDT_Duration::make('ws_timer')->initial('0'),
 			GDT_Path::make('ws_processor')->initial($this->defaultProcessorPath())->existingFile(),
 			GDT_Url::make('ws_url')->initial('ws://'.GDT_Url::host().':61221')->pattern('#^wss?://.*#'),
+		    GDT_Checkbox::make('ws_left_bar')->initial('1'),
 		);
 	}
 	public function cfgAutoConnect() { return $this->getConfigValue('ws_autoconnect'); }
@@ -47,7 +49,8 @@ final class Module_Websocket extends GDO_Module
 	public function cfgTimer() { return $this->getConfigValue('ws_timer'); }
 	public function cfgWebsocketProcessorPath() { return $this->getConfigValue('ws_processor'); }
 	public function cfgAllowGuests() { return $this->getConfigValue('ws_guests'); }
-
+	public function cfgLeftBar() { return $this->getConfigValue('ws_left_bar'); }
+	
 	public function defaultProcessorPath() { return sprintf('%sGDO/Websocket/Server/GWS_NoCommands.php', GDO_PATH); }
 	public function processorClass()
 	{
@@ -88,11 +91,12 @@ window.GDO_CONFIG.ws_autoconnect = %s;',
 	##############
 	### Navbar ###
 	##############
-	public function hookLeftBar(GDT_Bar $navbar)
+	public function onInitSidebar()
 	{
-		if (module_enabled('Angular'))
-		{
-			$this->templatePHP('leftbar.php', ['navbar' => $navbar]);
+// 	    if ($this->cfgLeftBar())
+	    {
+	        $navbar = GDT_Page::$INSTANCE->leftNav;
+   			$this->templatePHP('leftbar.php', ['navbar' => $navbar]);
 		}
 	}
 	
