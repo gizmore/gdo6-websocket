@@ -1,22 +1,25 @@
 <?php
 namespace GDO\Websocket\Websocket;
+
 use GDO\Websocket\Server\GWS_Message;
 use GDO\Websocket\Server\GWS_Command;
-use GDO\User\GDO_UserSetting;
 use GDO\Websocket\Server\GWS_Commands;
 use GDO\Core\Logger;
-use GDO\Avatar\Method\Gallery;
 use GDO\Core\GDO;
+use GDO\Core\ModuleLoader;
 
 final class GWS_Setting extends GWS_Command
 {
 	public function execute(GWS_Message $msg)
 	{
+	    $moduleName = $msg->readString();
+	    $module = ModuleLoader::instance()->getModule($moduleName);
 		$key = $msg->readString();
 		$value = $msg->readString();
-		if (!($setting = GDO_UserSetting::get($key)))
+		
+		if (!($setting = $setting = $module->setting($key)))
 		{
-			return $msg->replyErrorMessage($msg->cmd(), t('err_unknown_setting'));
+			return $msg->replyErrorMessage($msg->cmd(), t('err_unknown_setting', [html($key)]));
 		}
 		if ($value === $setting->var)
 		{
@@ -37,7 +40,7 @@ final class GWS_Setting extends GWS_Command
 			$value = $value->getID();
 		}
 		
-		GDO_UserSetting::set($key, $value);
+		$module->saveSetting($key, $value);
 		return $msg->replyBinary($msg->cmd());
 	}
 }
