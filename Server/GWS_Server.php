@@ -1,5 +1,6 @@
 <?php
 namespace GDO\Websocket\Server;
+
 use GDO\Core\Debug;
 use GDO\Core\Logger;
 use GDO\Core\Module_Core;
@@ -18,7 +19,6 @@ use GDO\Core\ModuleLoader;
 use GDO\Core\WithInstance;
 use GDO\Core\GDO_Hook;
 use GDO\Core\GDO;
-use GDO\Language\GDT_Language;
 use GDO\Language\Trans;
 use GDO\Core\Application;
 
@@ -96,7 +96,7 @@ final class GWS_Server implements MessageComponentInterface
 			} catch (\Exception $ex) {
 				Logger::logException($ex);
 			}
-			GDO_Hook::table()->deleteWhere("hook_message=".GDO::quoteS($message))->exec();
+			GDO_Hook::table()->deleteWhere("hook_message=".GDO::quoteS($message));
 			$this->ipcdbTimer();
 		}
 	}
