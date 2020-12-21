@@ -10,10 +10,11 @@ use GDO\Websocket\Module_Websocket;
 use GDO\Websocket\Server\GWS_Server;
 
 # Load config
-include 'protected/config.php'; # <-- You might need to adjust this path.
-include 'GDO6.php';
+if (defined('GWF_CONFIGURED')) return;
+require_once 'protected/config.php'; # <-- You might need to adjust this path.
+require_once 'GDO6.php';
 
-include 'GDO/Websocket/gwf4-ratchet/autoload.php';
+require_once 'GDO/Websocket/gwf4-ratchet/autoload.php';
 
 # Init some config like
 $_SERVER['REQUEST_URI'] = 'ws.php';
@@ -43,7 +44,7 @@ ModuleLoader::instance()->loadModulesCache();
 # Create WS
 $gws = Module_Websocket::instance();
 
-include $gws->cfgWebsocketProcessorPath();
+require_once $gws->cfgWebsocketProcessorPath();
 
 $processor = $gws->processorClass();
 

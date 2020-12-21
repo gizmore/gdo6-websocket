@@ -27,7 +27,8 @@ final class Module_Websocket extends GDO_Module
 	##############
 	public $module_priority = 45;
 	public function onLoadLanguage() { return $this->loadLanguage('lang/websocket'); }
-
+	public function thirdPartyFolders() { return ['/gwf4-ratchet/']; }
+	
 	##############
 	### Config ###
 	##############
@@ -93,7 +94,7 @@ window.GDO_CONFIG.ws_autoconnect = %s;',
 	##############
 	public function onInitSidebar()
 	{
-// 	    if ($this->cfgLeftBar())
+	    if ($this->cfgLeftBar())
 	    {
 	        $navbar = GDT_Page::$INSTANCE->leftNav;
    			$this->templatePHP('leftbar.php', ['navbar' => $navbar]);

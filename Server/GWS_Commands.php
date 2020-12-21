@@ -6,9 +6,9 @@ use GDO\User\GDO_User;
 use GDO\Core\Logger;
 use GDO\Session\GDO_Session;
 
-include 'GWS_Command.php';
-include 'GWS_CommandForm.php';
-include 'GWS_CommandMethod.php';
+require_once 'GWS_Command.php';
+require_once 'GWS_CommandForm.php';
+require_once 'GWS_CommandMethod.php';
 
 /**
  * Command handler base class.

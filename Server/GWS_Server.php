@@ -22,7 +22,8 @@ use GDO\Core\GDO;
 use GDO\Language\Trans;
 use GDO\Core\Application;
 
-include 'GWS_Message.php';
+require_once 'GWS_Message.php';
+require_once 'GDO/Websocket/gwf4-ratchet/autoload.php';
 
 final class GWS_Server implements MessageComponentInterface
 {
@@ -277,7 +278,7 @@ final class GWS_Server implements MessageComponentInterface
 	
 	public function registerModuleCommands($entry, $path)
 	{
-		include $path;
+		require_once $path;
 	}
 	
 	private function socketOptions()
