@@ -103,7 +103,7 @@ abstract class GWS_Command
 	public function pagemenuToBinary(GDT_PageMenu $gdt)
 	{
 		return GWS_Message::wr16($gdt->getPage()) . 
-		   GWS_Message::wr16($gdt->getPages()) .
+		   GWS_Message::wr16($gdt->getPageCount()) .
 		   GWS_Message::wr32($gdt->numItems) .
 		   GWS_Message::wr16($gdt->ipp);
 	}
