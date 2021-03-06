@@ -1,4 +1,6 @@
 <?php
+namespace GDO\Websocket\Websocket;
+
 use GDO\Websocket\Server\GWS_Command;
 use GDO\Websocket\Server\GWS_Commands;
 use GDO\Websocket\Server\GWS_Message;
