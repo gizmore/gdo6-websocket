@@ -12,14 +12,21 @@ use GDO\Util\Javascript;
 use GDO\Util\Strings;
 use GDO\UI\GDT_Page;
 use GDO\Core\GDT_Array;
+use GDO\Angular\Module_Angular;
+use GDO\Core\Application;
 
 /**
  * Websocket server module.
  * 
+ * Uses a slightly modified version of ratchet, which can pass the IP to the server.
+ * 
+ * It is advised to use gdo6-session-db for sites with a websocket server.
+ * The cookie is exchanged via js and ws and www, and it can be quite large when storing sessions.
+ * 
  * @author gizmore
  * 
- * @version 6.10
- * @since 6.05
+ * @version 6.10.1
+ * @since 6.5.0
  */
 final class Module_Websocket extends GDO_Module
 {
@@ -35,7 +42,7 @@ final class Module_Websocket extends GDO_Module
 	##############
 	public function getConfig()
 	{
-		return array(
+		return [
 			GDT_Checkbox::make('ws_autoconnect')->initial('0'),
 			GDT_Checkbox::make('ws_guests')->initial('1'),
 			GDT_Int::make('ws_port')->bytes(2)->unsigned()->initial('61221'),
@@ -43,7 +50,7 @@ final class Module_Websocket extends GDO_Module
 			GDT_Path::make('ws_processor')->initial($this->defaultProcessorPath())->existingFile(),
 			GDT_Url::make('ws_url')->initial('ws://'.GDT_Url::host().':61221')->pattern('#^wss?://.*#'),
 		    GDT_Checkbox::make('ws_left_bar')->initial('1'),
-		);
+		];
 	}
 	public function cfgAutoConnect() { return $this->getConfigValue('ws_autoconnect'); }
 	public function cfgUrl() { return $this->getConfigVar('ws_url'); }
@@ -57,7 +64,6 @@ final class Module_Websocket extends GDO_Module
 	public function processorClass()
 	{
 		$path = Strings::substrFrom($this->cfgWebsocketProcessorPath(), GDO_PATH);
-		
 		$path = str_replace('/', '\\', $path);
 		return Strings::substrTo($path, '.'); 
 	}
@@ -67,11 +73,15 @@ final class Module_Websocket extends GDO_Module
 	##########
 	public function onIncludeScripts()
 	{
-		if (module_enabled('Angular'))
-		{
-			$this->addJavascript('js/gwf-websocket-srvc.js');
-			$this->addJavascript('js/gwf-ws-navbar-ctrl.js');
-		}
+	    if (module_enabled('Angular'))
+	    {
+    		if (Module_Angular::instance()->cfgIncludeScripts() ||
+    		    Application::instance()->hasTheme('material'))
+    		{
+    			$this->addJavascript('js/gwf-websocket-srvc.js');
+    			$this->addJavascript('js/gwf-ws-navbar-ctrl.js');
+    		}
+	    }
 		$this->addJavascript('js/gws-message.js');
 		Javascript::addJavascriptInline($this->configJS());
 	}
