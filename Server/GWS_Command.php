@@ -16,6 +16,8 @@ use GDO\Core\GDT_Secret;
 use GDO\Table\GDT_PageMenu;
 use GDO\DB\GDT_Float;
 use GDO\Core\GDOException;
+use GDO\UI\GDT_Page;
+
 /**
  * GWS_Commands have to register via GWS_Commands::register($code, GWS_Command, $binary=true)
  * @author gizmore
@@ -35,7 +37,12 @@ abstract class GWS_Command
 	################
 	### Abstract ###
 	################
-	public abstract function execute(GWS_Message $msg);
+	public function execute(GWS_Message $msg)
+	{
+	    $_GET = []; $_POST = []; $_REQUEST = []; $_FILES = [];
+	    $_GET['fmt'] = 'json'; $_GET['ajax'] = 1;
+	    GDT_Page::$INSTANCE->reset();
+	}
 
 	############
 	### Util ###
@@ -76,7 +83,7 @@ abstract class GWS_Command
 			elseif ($field instanceof GDT_Enum)
 			{
 				$value = array_search($gdo->getVar($field->name), $field->enumValues);
-				$payload .= GWS_Message::wr8($value === false ? 0 : $value + 1);
+				$payload .= GWS_Message::wr16($value === false ? 0 : $value + 1);
 			}
 			elseif ($field instanceof GDT_Timestamp)
 			{

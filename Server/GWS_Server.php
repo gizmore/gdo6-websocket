@@ -75,7 +75,7 @@ final class GWS_Server implements MessageComponentInterface
 		{
 			# 3 seconds db poll alternative
 			GDO_Hook::table()->truncate();
-			$this->server->loop->addPeriodicTimer(3.00, [$this, 'ipcdbTimer']);
+			$this->server->loop->addPeriodicTimer(3.14, [$this, 'ipcdbTimer']);
 		}
 		elseif (GWF_IPC)
 		{
@@ -90,18 +90,22 @@ final class GWS_Server implements MessageComponentInterface
 	public function ipcdbTimer()
 	{
 	    Application::updateTime();
-	    if ($message = GDO_Hook::table()->select()->first()->exec()->fetchValue())
+	    if ($message = GDO_Hook::table()->select()->first()->exec()->fetchRow())
 		{
-			try {
-				GWS_Commands::webHookDB($message);
-			} catch (\Exception $ex) {
+			try
+			{
+			    GWS_Commands::webHookDB($message[1]);
+			}
+			catch (\Throwable $ex)
+			{
 				Logger::logException($ex);
 			}
-			GDO_Hook::table()->deleteWhere("hook_message=".GDO::quoteS($message));
+			# Delete this row
+			GDO_Hook::table()->deleteWhere("hook_id=".$message[0]);
+			# Recall immediately
 			$this->ipcdbTimer();
 		}
 	}
-	
 	
 	public function ipcTimer()
 	{
@@ -140,29 +144,6 @@ final class GWS_Server implements MessageComponentInterface
 	public function onMessage(ConnectionInterface $from, $data)
 	{
 		die('NON BINARY MESSAGE NOT SUPPORTED ANYMORE');
-		
-// 		printf("%s >> %s\n", $from->user() ? $from->user()->displayName() : '???', $data);
-// 		$message = new GWS_Message($data, $from);
-// 		$message->readTextCmd();
-// 		if ($from->user())
-// 		{
-// 			GDT_IP::$CURRENT = $from->getRemoteAddress();
-// 			GDO_User::$CURRENT = $from->user();
-// 			GDO_Session::reloadID($from->user()->tempGet('sess_id'));
-// 			try
-// 			{
-// 				$this->handler->executeMessage($message);
-// 			}
-// 			catch (Exception $e)
-// 			{
-// 				Logger::logException($e);
-// 				$message->replyErrorMessage($message->cmd(), $e->getMessage());
-// 			}
-// 		}
-// 		else
-// 		{
-// 			$message->replyError(0x0002);
-// 		}
 	}
 	
 	public function onBinaryMessage(ConnectionInterface $from, $data)

@@ -48,7 +48,7 @@ final class Module_Websocket extends GDO_Module
 			GDT_Int::make('ws_port')->bytes(2)->unsigned()->initial('61221'),
 			GDT_Duration::make('ws_timer')->initial('0'),
 			GDT_Path::make('ws_processor')->initial($this->defaultProcessorPath())->existingFile(),
-			GDT_Url::make('ws_url')->initial('ws://'.GDT_Url::host().':61221')->pattern('#^wss?://.*#'),
+			GDT_Url::make('ws_url')->initial('ws://'.GDT_Url::host().':61221')->schemes('wss', 'ws'),
 		    GDT_Checkbox::make('ws_left_bar')->initial('1'),
 		];
 	}
@@ -63,7 +63,9 @@ final class Module_Websocket extends GDO_Module
 	public function defaultProcessorPath() { return sprintf('%sGDO/Websocket/Server/GWS_NoCommands.php', GDO_PATH); }
 	public function processorClass()
 	{
-		$path = Strings::substrFrom($this->cfgWebsocketProcessorPath(), GDO_PATH);
+	    $path = $this->cfgWebsocketProcessorPath();
+	    $path = str_replace('\\', '/', $path);
+		$path = Strings::substrFrom($path, GDO_PATH);
 		$path = str_replace('/', '\\', $path);
 		return Strings::substrTo($path, '.'); 
 	}

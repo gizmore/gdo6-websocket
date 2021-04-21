@@ -8,11 +8,11 @@ use GDO\Language\Trans;
 use GDO\Session\GDO_Session;
 use GDO\Websocket\Module_Websocket;
 use GDO\Websocket\Server\GWS_Server;
+use GDO\UI\GDT_Page;
 
 # Load config
-if (defined('GWF_CONFIGURED')) return;
-require_once 'protected/config.php'; # <-- You might need to adjust this path.
 require_once 'GDO6.php';
+require_once 'protected/config.php'; # <-- You might need to adjust this path.
 
 require_once 'GDO/Websocket/gwf4-ratchet/autoload.php';
 
@@ -29,7 +29,7 @@ class WebsocketApplication extends Application
 	public function isCLI() { return true; }
 	public function isWebsocket() { return true; }
 }
-$app = new WebsocketApplication();
+new WebsocketApplication();
 Trans::$ISO = GWF_LANGUAGE;
 Logger::init(null, Logger::_ALL&~Logger::BUFFERED); # 1st init as guest
 Debug::init();
@@ -42,12 +42,13 @@ ModuleLoader::instance()->loadModulesCache();
 // GDO_Session::instance();
 
 # Create WS
+GDT_Page::make('page');
 $gws = Module_Websocket::instance();
 
-require_once $gws->cfgWebsocketProcessorPath();
+$processorPath = $gws->cfgWebsocketProcessorPath();
+require $processorPath;
 
 $processor = $gws->processorClass();
-
 
 $server = new GWS_Server();
 if (GWF_IPC && (GWF_IPC !== 'db') )

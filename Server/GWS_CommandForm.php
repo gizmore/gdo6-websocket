@@ -10,12 +10,14 @@ use GDO\DB\GDT_Int;
 use GDO\Core\GDT_JSONResponse;
 use GDO\Core\GDT;
 use GDO\Core\GDOException;
-use GDO\Core\GDT_Success;
+use GDO\UI\GDT_Panel;
+use GDO\Core\Website;
+
 /**
  * Call MethodForm via websockets.
  * @author gizmore
+ * @version 6.10.1
  * @since 5.0
- * @version 5.0
  */
 abstract class GWS_CommandForm extends GWS_Command
 {
@@ -28,9 +30,13 @@ abstract class GWS_CommandForm extends GWS_Command
 	
 	public function execute(GWS_Message $msg)
 	{
+	    parent::execute($msg);
+	    
 	    $_GET = []; $_POST = []; $_REQUEST = []; $_FILES = [];
-		$method = $this->getMethod();
-		$this->fillRequestVars($msg);
+		
+	    $method = $this->getMethod();
+		
+	    $this->fillRequestVars($msg);
 		
 		try
 		{
@@ -45,7 +51,7 @@ abstract class GWS_CommandForm extends GWS_Command
 		$this->selectSubmit($form);
 		$this->removeCSRF($form);
 // 		$this->removeCaptcha($form);
-		$response = $method->exec();
+		$response = $method->executeWithInit();
 		$this->postExecute($msg, $form, $response);
 	}
 	
@@ -80,6 +86,12 @@ abstract class GWS_CommandForm extends GWS_Command
 		{
 			$payload .= $this->payloadFromField($gdoType);
 		}
+		
+		if (@Website::$TOP_RESPONSE)
+		{
+		    $payload = Website::$TOP_RESPONSE->renderCLI() . $payload . chr(0);
+		}
+		
 		return $payload;
 	}
 	
@@ -101,9 +113,10 @@ abstract class GWS_CommandForm extends GWS_Command
 		{
 			$payload .= GWS_Message::wrN($gdoType->bytes, $gdoType->getValue());
 		}
-		elseif ($gdoType instanceof GDT_Success)
+		elseif ($gdoType instanceof GDT_Panel)
 		{
-			$payload .= GWS_Message::wrS($gdoType->html);
+		    $text = $gdoType->renderText();
+			$payload .= GWS_Message::wrS($text);
 		}
 		return $payload;
 	}
@@ -115,12 +128,19 @@ abstract class GWS_CommandForm extends GWS_Command
 	protected function getSubmits(GDT_Form $form)
 	{
 		$submits = [];
-		foreach ($form->getFields() as $field)
+		foreach ($form->getFieldsRec() as $field)
 		{
-			if ($field instanceof GDT_Submit)
-			{
-				$submits[] = $field;
-			}
+		    if ($field instanceof GDT_Submit)
+		    {
+		        $submits[] = $field;
+		    }
+		}
+		foreach ($form->actions()->getFieldsRec() as $field)
+		{
+		    if ($field instanceof GDT_Submit)
+		    {
+		        $submits[] = $field;
+		    }
 		}
 		return $submits;
 	}
@@ -146,7 +166,9 @@ abstract class GWS_CommandForm extends GWS_Command
 		if ($submit = @$submits[$num])
 		{
 			$name = $submit->name;
-			$_REQUEST[$name] = $_POST[$name] = $name;
+			$f = $form->formName();
+			$_REQUEST[$f][$name] = $_POST[$f][$name] = $name;
 		}
 	}
+
 }

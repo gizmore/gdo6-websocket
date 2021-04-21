@@ -8,6 +8,11 @@ use GDO\Core\Logger;
 use GDO\Core\GDO;
 use GDO\Core\ModuleLoader;
 
+/**
+ * Change a user setting.
+ * @author gizmore
+ *
+ */
 final class GWS_Setting extends GWS_Command
 {
 	public function execute(GWS_Message $msg)
@@ -15,18 +20,18 @@ final class GWS_Setting extends GWS_Command
 	    $moduleName = $msg->readString();
 	    $module = ModuleLoader::instance()->getModule($moduleName);
 		$key = $msg->readString();
-		$value = $msg->readString();
+		$var = $msg->readString();
 		
 		if (!($setting = $setting = $module->setting($key)))
 		{
 			return $msg->replyErrorMessage($msg->cmd(), t('err_unknown_setting', [html($key)]));
 		}
-		if ($value === $setting->var)
+		if ($var === $setting->var)
 		{
 			return $msg->replyErrorMessage($msg->cmd(), t('err_setting_unchanged'));
 		}
 		
-		$value = $setting->toValue($value);
+		$value = $setting->toValue($var);
 		if (!$setting->validate($value))
 		{
 			return $msg->replyErrorMessage($msg->cmd(), t('err_setting_validate', [$setting->error]));

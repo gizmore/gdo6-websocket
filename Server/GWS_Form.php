@@ -15,6 +15,7 @@ use GDO\Core\GDOException;
 use GDO\DB\GDT_Float;
 use GDO\DB\GDT_Enum;
 use GDO\Date\GDT_Timestamp;
+
 /**
  * Fill a GDT_Form with a GWS_Message.
  * Fill a Method with a GWS_Message.
@@ -63,7 +64,7 @@ final class GWS_Form
 		{
 			if ($gdoType->isSerializable())
 			{
-// 				Logger::logWebsocket(sprintf("Reading %s as a %s.", $gdoType->name, get_class($gdoType)));
+				Logger::logWebsocket(sprintf("Reading %s as a %s.", $gdoType->name, get_class($gdoType)));
 				
 				if ($gdoType instanceof GDT_Checkbox)
 				{
@@ -88,7 +89,7 @@ final class GWS_Form
 				}
 				elseif ($gdoType instanceof GDT_Enum)
 				{
-					$gdoType->var($gdoType->enumForId($msg->read8u()));
+					$gdoType->var($gdoType->enumForId($msg->read16u()));
 				}
 				elseif ($gdoType instanceof GDT_Timestamp)
 				{
@@ -102,7 +103,7 @@ final class GWS_Form
 						$gdoType->var(null);
 					}
 				}
-// 				Logger::logWebsocket(sprintf("Reading %s as a %s for %s.", $gdoType->name, get_class($gdoType), $gdoType->var));
+				Logger::logWebsocket(sprintf("Reading %s as a %s for %s.", $gdoType->name, get_class($gdoType), $gdoType->var));
 				
 			}
 		}

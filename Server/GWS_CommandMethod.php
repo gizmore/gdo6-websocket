@@ -25,11 +25,10 @@ abstract class GWS_CommandMethod extends GWS_Command
 	
 	public function execute(GWS_Message $msg)
 	{
-		$_GET = []; $_POST = []; $_REQUEST = []; $_FILES = [];
-		$_GET['fmt'] = 'json'; $_GET['ajax'] = 1;
+	    parent::execute($msg);
 		$this->fillRequestVars($msg);
 		$method = $this->getMethod();
-		$response = $method->exec();
+		$response = $method->executeWithInit();
 		$this->postExecute($msg, $response);
 	}
 	

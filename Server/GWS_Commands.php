@@ -17,7 +17,7 @@ require_once 'GWS_CommandMethod.php';
  */
 class GWS_Commands
 {
-	const MID_LENGTH = 7; # Sync Message ID
+	const MID_LENGTH = 7; # Sync Message ID length
 	const DEFAULT_MID = '0000000'; # Sync Message ID
 	
 	################
@@ -39,6 +39,10 @@ class GWS_Commands
 	
 	public static function webHookDB($message)
 	{
+	    if (GWF_CONSOLE_VERBOSE)
+	    {
+	        echo "{$message}\n";
+	    }
 		$message = json_decode($message, true);
 		$event = $message['event'];
 		$args = $message['args'];
