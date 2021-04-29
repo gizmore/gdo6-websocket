@@ -70,6 +70,11 @@ final class GWS_Message
 		return $this->replyBinary(0x0000, $this->write16($code).$this->writeString($message));
 	}
 	
+	public function rplyError($key, array $args=null)
+	{
+	    return $this->replyErrorMessage($this->cmd(), t($key, $args));
+	}
+	
 	##############
 	### Reader ###
 	##############

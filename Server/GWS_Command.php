@@ -5,14 +5,11 @@ use GDO\Core\GDO;
 use GDO\Date\GDT_Timestamp;
 use GDO\Date\Time;
 use GDO\DB\GDT_Enum;
-use GDO\Net\GDT_IP;
 use GDO\DB\GDT_Decimal;
 use GDO\DB\GDT_Int;
-use GDO\User\GDT_Password;
 use GDO\DB\GDT_String;
 use GDO\User\GDO_User;
 use GDO\Maps\GDT_Position;
-use GDO\Core\GDT_Secret;
 use GDO\Table\GDT_PageMenu;
 use GDO\DB\GDT_Float;
 use GDO\Core\GDOException;
@@ -59,15 +56,14 @@ abstract class GWS_Command
 		$payload = '';
 		foreach ($fields as $field)
 		{
+		    if ( (!$field->isSerializable()) )
+		    {
+		        continue;
+		    }
+		    
 			$field->gdo($gdo);
 			
-			if ( ($field instanceof GDT_Password) ||
-				 ($field instanceof GDT_IP) ||
-				 ($field instanceof GDT_Secret) )
-			{
-				# skip
-			}
-			elseif ($field instanceof GDT_String)
+			if ($field instanceof GDT_String)
 			{
 				$payload .= GWS_Message::wrS($gdo->getVar($field->name));
 			}
