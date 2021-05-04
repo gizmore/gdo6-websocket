@@ -8,6 +8,8 @@ use GDO\Websocket\Server\GWS_Commands;
 use GDO\Websocket\Server\GWS_Message;
 use GDO\User\GDO_User;
 use GDO\Websocket\Server\GWS_Global;
+use GDO\Forum\GDO_ForumThread;
+use GDO\Forum\GDO_ForumPost;
 /**
  * Ping and ws system hooks.
  * 
@@ -50,6 +52,15 @@ final class GWS_Ping extends GWS_Command
 		{
 			$this->tempReset($object);
 		}
+	}
+	
+	public function hookForumActivity(GDO_ForumThread $thread, GDO_ForumPost $post)
+	{
+	    $table = GDO_User::table();
+	    foreach ($table->cache->cache as $user)
+	    {
+	        $user->tempUnset('forum_unread');
+	    }
 	}
 	
 	private function tempReset(GDO $gdo)
