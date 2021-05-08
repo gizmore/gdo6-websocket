@@ -39,7 +39,7 @@ class GWS_Commands
 	
 	public static function webHookDB($message)
 	{
-	    if (GWF_CONSOLE_VERBOSE)
+	    if (GDO_CONSOLE_VERBOSE)
 	    {
 	        echo "{$message}\n";
 	    }

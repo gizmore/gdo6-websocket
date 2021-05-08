@@ -42,13 +42,13 @@ final class GWS_Server implements MessageComponentInterface
 	public function __construct()
 	{
 		self::$INSTANCE = $this;
-		if (GWF_IPC === 'db')
+		if (GDO_IPC === 'db')
 		{
 			# all fine
 		}
-		elseif (GWF_IPC)
+		elseif (GDO_IPC)
 		{
-			for ($i = 1; $i < GWF_IPC; $i++)
+			for ($i = 1; $i < GDO_IPC; $i++)
 			{
 				msg_remove_queue(msg_get_queue($i));
 			}
@@ -71,13 +71,13 @@ final class GWS_Server implements MessageComponentInterface
 		}
 
 		# IPC timer
-		if (GWF_IPC === 'db')
+		if (GDO_IPC === 'db')
 		{
 			# 3 seconds db poll alternative
 			GDO_Hook::table()->truncate();
 			$this->server->loop->addPeriodicTimer(3.14, [$this, 'ipcdbTimer']);
 		}
-		elseif (GWF_IPC)
+		elseif (GDO_IPC)
 		{
 			$this->server->loop->addPeriodicTimer(0.250, [$this, 'ipcTimer']);
 		}

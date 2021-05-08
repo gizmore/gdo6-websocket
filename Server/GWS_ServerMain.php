@@ -30,14 +30,14 @@ class WebsocketApplication extends Application
 	public function isWebsocket() { return true; }
 }
 new WebsocketApplication();
-Trans::$ISO = GWF_LANGUAGE;
+Trans::$ISO = GDO_LANGUAGE;
 Logger::init(null, Logger::_ALL&~Logger::BUFFERED); # 1st init as guest
 Debug::init();
 Debug::enableErrorHandler();
 Debug::setDieOnError(false);
-Debug::setMailOnError(GWF_ERROR_MAIL);
+Debug::setMailOnError(GDO_ERROR_MAIL);
 Database::init();
-GDO_Session::init(GWF_SESS_NAME, GWF_SESS_DOMAIN, GWF_SESS_TIME, !GWF_SESS_JS, GWF_SESS_HTTPS);
+GDO_Session::init(GDO_SESS_NAME, GDO_SESS_DOMAIN, GDO_SESS_TIME, !GDO_SESS_JS, GDO_SESS_HTTPS);
 ModuleLoader::instance()->loadModulesCache();
 // GDO_Session::instance();
 
@@ -51,7 +51,7 @@ require $processorPath;
 $processor = $gws->processorClass();
 
 $server = new GWS_Server();
-if (GWF_IPC && (GWF_IPC !== 'db') )
+if (GDO_IPC && (GDO_IPC !== 'db') )
 {
 	$server->ipcTimer();
 }
