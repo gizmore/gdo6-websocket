@@ -165,7 +165,8 @@ final class GWS_Server implements MessageComponentInterface
 				/**
 				 * @var GDO_User $user
 				 */
-				$user = GDO_User::$CURRENT = $from->user();
+				$user = $from->user();
+				GDO_User::setCurrent($user);
 				$sessid = $user->tempGet('sess_id');
 				GDO_Session::reloadID($sessid);
 				$langISO = $user->tempGet('lang_iso');

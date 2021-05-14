@@ -21,7 +21,7 @@ final class GWS_Logout extends GWS_Command
 		GWS_Global::removeUser($msg->user());
 		Logout::make()->execute();
 		
-		$user = GDO_User::$CURRENT;
+		$user = GDO_User::current();
 		$msg->conn()->setUser($user);
 
 		$user->tempSet('sess_id', $sessid);

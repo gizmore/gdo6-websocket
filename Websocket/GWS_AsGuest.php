@@ -18,7 +18,8 @@ final class GWS_AsGuest extends GWS_CommandForm
 
 	public function replySuccess(GWS_Message $msg, GDT_Form $form, GDT_Response $response)
 	{
-		GDO_User::$CURRENT = $user = GDO_Session::instance()->getUser();
+		$user = GDO_Session::instance()->getUser();
+		GDO_User::setCurrent($user);
 		GWS_Global::addUser($user, $msg->conn());
 		$user->tempSet('sess_id', GDO_Session::instance()->getID());
 		$msg->conn()->setUser($user);
