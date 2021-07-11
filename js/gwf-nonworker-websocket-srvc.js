@@ -142,7 +142,7 @@ service('GDOWebsocketSrvc', function($q, $rootScope, GDOErrorSrvc, GDOLoadingSrv
 
 	WebsocketSrvc.processMessage = function(messageText) {
 //		console.log('ConnectCtrl.processMessage()', messageText);
-		var command = messageText.substrUntil(':');
+		var command = messageText.substrTo(':');
 		$rootScope.$broadcast('gws-ws-message', messageText);
 	};
 
