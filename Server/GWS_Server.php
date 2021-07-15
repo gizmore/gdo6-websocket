@@ -21,6 +21,7 @@ use GDO\Core\GDO_Hook;
 use GDO\Core\GDO;
 use GDO\Language\Trans;
 use GDO\Core\Application;
+use GDO\Date\Time;
 
 require_once 'GWS_Message.php';
 require_once 'GDO/Websocket/gwf4-ratchet/autoload.php';
@@ -172,6 +173,7 @@ final class GWS_Server implements MessageComponentInterface
 				$langISO = $user->tempGet('lang_iso');
 				$langISO = $langISO ? $langISO : $user->getLangISO();
 				Trans::setISO($langISO);
+				Time::setTimezone($user->getTimezone());
 				$this->handler->executeMessage($message);
 			}
 			catch (Exception $e) {
