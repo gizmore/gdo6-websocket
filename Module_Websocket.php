@@ -85,7 +85,7 @@ final class Module_Websocket extends GDO_Module
     		}
 	    }
 		$this->addJavascript('js/gws-message.js');
-		Javascript::addJavascriptInline($this->configJS());
+		Javascript::addJavascriptPreInline($this->configJS());
 	}
 	
 	private function configJS()
