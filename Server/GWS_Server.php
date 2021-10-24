@@ -162,7 +162,7 @@ final class GWS_Server implements MessageComponentInterface
 		else
 		{
 			try {
-				$_REQUEST = array('fmt'=>'ws'); # start with a blank request emulation
+				$_REQUEST = array('_fmt'=>'ws'); # start with a blank request emulation
 				/**
 				 * @var GDO_User $user
 				 */
@@ -247,7 +247,7 @@ final class GWS_Server implements MessageComponentInterface
 // 		$this->consoleLog = GWS_Global::$LOGGING = $gws->cfgConsoleLogging();
 		$this->server = IoServer::factory(new HttpServer(new WsServer($this)), $port, $this->socketOptions());
 		$this->handler->init();
-		$_REQUEST['fmt'] = 'ws';
+		$_REQUEST['_fmt'] = 'ws';
 		$this->registerCommands();
 		return true;
 	}

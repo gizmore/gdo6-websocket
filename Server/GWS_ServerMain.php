@@ -19,7 +19,7 @@ require_once 'GDO/Websocket/gwf4-ratchet/autoload.php';
 # Init some config like
 $_SERVER['REQUEST_URI'] = 'ws.php';
 $_GET['ajax'] = '1';
-$_GET['fmt'] = 'json';
+$_GET['_fmt'] = 'json';
 $_GET['mo'] = 'Websocket';
 $_GET['me'] = 'Run';
 
