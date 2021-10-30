@@ -8,7 +8,7 @@ use GDO\Net\GDT_Url;
 use GDO\DB\GDT_Checkbox;
 use GDO\DB\GDT_Int;
 use GDO\Session\GDO_Session;
-use GDO\Util\Javascript;
+use GDO\Javascript\Javascript;
 use GDO\Util\Strings;
 use GDO\UI\GDT_Page;
 use GDO\Core\GDT_Array;
