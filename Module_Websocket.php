@@ -80,12 +80,12 @@ final class Module_Websocket extends GDO_Module
     		if (Module_Angular::instance()->cfgIncludeScripts() ||
     		    Application::instance()->hasTheme('material'))
     		{
-    			$this->addJavascript('js/gwf-websocket-srvc.js');
-    			$this->addJavascript('js/gwf-ws-navbar-ctrl.js');
+    			$this->addJS('js/gwf-websocket-srvc.js');
+    			$this->addJS('js/gwf-ws-navbar-ctrl.js');
     		}
 	    }
-		$this->addJavascript('js/gws-message.js');
-		Javascript::addJavascriptPreInline($this->configJS());
+		$this->addJS('js/gws-message.js');
+		Javascript::addJSPreInline($this->configJS());
 	}
 	
 	private function configJS()
