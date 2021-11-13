@@ -5,11 +5,13 @@ use GDO\Util\Common;
 use GDO\Websocket\Module_Websocket;
 use GDO\Core\Module_Core;
 use GDO\Core\MethodAjax;
+use GDO\Core\GDT_Array;
 
 /**
  * Get cookie and user JSON for external apps.
+ * 
  * @author gizmore
- * @version 6.10.1
+ * @version 6.10.6
  * @since 4.0.0
  */
 final class GetSecret extends MethodAjax
@@ -21,7 +23,7 @@ final class GetSecret extends MethodAjax
 			'secret' => Module_Websocket::instance()->secret(),
 			'count' => Common::getRequestInt('count', 0),
 		];
-		die(json_encode($json, JSON_PRETTY_PRINT));
+		return GDT_Array::makeWith($json);
 	}
 	
 }

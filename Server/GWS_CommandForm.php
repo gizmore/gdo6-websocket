@@ -32,8 +32,6 @@ abstract class GWS_CommandForm extends GWS_Command
 	{
 	    parent::execute($msg);
 	    
-	    $_GET = []; $_POST = []; $_REQUEST = []; $_FILES = [];
-		
 	    $method = $this->getMethod();
 		
 	    $this->fillRequestVars($msg);

@@ -36,8 +36,12 @@ abstract class GWS_Command
 	################
 	public function execute(GWS_Message $msg)
 	{
-	    $_GET = []; $_POST = []; $_REQUEST = []; $_FILES = [];
-	    $_GET['_fmt'] = 'json'; $_GET['_ajax'] = 1;
+	    $_GET = [];
+	    $_POST = [];
+	    $_REQUEST = [];
+	    $_FILES = [];
+	    $_REQUEST['_fmt'] = 'json';
+	    $_REQUEST['_ajax'] = 1;
 	    GDT_Page::$INSTANCE->reset();
 	}
 

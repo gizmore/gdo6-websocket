@@ -199,7 +199,7 @@ final class GWS_Server implements MessageComponentInterface
 		}
 		elseif (!($user = GDO_User::current()))
 		{
-			$message->replyError(0x0004, "Cannot load user for session");
+			$message->replyErrorMessage(0x0004, "Cannot load user for session");
 		}
 		else
 		{
@@ -247,7 +247,7 @@ final class GWS_Server implements MessageComponentInterface
 // 		$this->consoleLog = GWS_Global::$LOGGING = $gws->cfgConsoleLogging();
 		$this->server = IoServer::factory(new HttpServer(new WsServer($this)), $port, $this->socketOptions());
 		$this->handler->init();
-		$_REQUEST['_fmt'] = 'ws';
+		$_REQUEST['_fmt'] = 'cli';
 		$this->registerCommands();
 		return true;
 	}
