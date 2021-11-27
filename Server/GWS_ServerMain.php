@@ -18,10 +18,10 @@ require_once 'GDO/Websocket/gwf4-ratchet/autoload.php';
 
 # Init some config like
 $_SERVER['REQUEST_URI'] = 'ws.php';
-$_GET['ajax'] = '1';
-$_GET['_fmt'] = 'json';
-$_GET['mo'] = 'Websocket';
-$_GET['me'] = 'Run';
+$_REQUEST['_ajax'] = '1';
+$_REQUEST['_fmt'] = 'json';
+$_REQUEST['mo'] = 'Websocket';
+$_REQUEST['me'] = 'Run';
 
 # Bootstrap
 class WebsocketApplication extends Application
