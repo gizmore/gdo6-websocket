@@ -80,9 +80,9 @@ abstract class GWS_CommandForm extends GWS_Command
 	private function payloadFromResponse(GDT_Response $response)
 	{
 		$payload = '';
-		foreach ($response->getFieldsRec() as $gdoType)
+		foreach ($response->getFieldsRec() as $gdt)
 		{
-			$payload .= $this->payloadFromField($gdoType);
+			$payload .= $this->payloadFromField($gdt);
 		}
 		
 		if (@Website::$TOP_RESPONSE)
