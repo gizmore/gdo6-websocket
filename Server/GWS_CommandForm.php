@@ -93,27 +93,27 @@ abstract class GWS_CommandForm extends GWS_Command
 		return $payload;
 	}
 	
-	private function payloadFromField(GDT $gdoType)
+	private function payloadFromField(GDT $gdt)
 	{
 		$payload = '';
-		if ($gdoType instanceof GDT_JSONResponse)
+		if ($gdt instanceof GDT_JSONResponse)
 		{
-			foreach ($gdoType->getFields() as $gdoType)
+			foreach ($gdt->getFields() as $gdt)
 			{
-				$payload .= $this->payloadFromField($gdoType);
+				$payload .= $this->payloadFromField($gdt);
 			}
 		}
-		elseif ($gdoType instanceof GDT_String)
+		elseif ($gdt instanceof GDT_String)
 		{
-			$payload .= GWS_Message::wrS($gdoType->getVar());
+			$payload .= GWS_Message::wrS($gdt->getVar());
 		}
-		elseif ($gdoType instanceof GDT_Int)
+		elseif ($gdt instanceof GDT_Int)
 		{
-			$payload .= GWS_Message::wrN($gdoType->bytes, $gdoType->getValue());
+			$payload .= GWS_Message::wrN($gdt->bytes, $gdt->getValue());
 		}
-		elseif ($gdoType instanceof GDT_Panel)
+		elseif ($gdt instanceof GDT_Panel)
 		{
-		    $text = $gdoType->renderText();
+		    $text = $gdt->renderText();
 			$payload .= GWS_Message::wrS($text);
 		}
 		return $payload;

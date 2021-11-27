@@ -52,65 +52,65 @@ final class GWS_Form
 	 */
 	public static function bindFields(array $fields, GWS_Message $msg)
 	{
-		foreach ($fields as $gdoType)
+		foreach ($fields as $gdt)
 		{
-			self::bind($gdoType, $msg);
+			self::bind($gdt, $msg);
 		}
 	}
 	
-	private static function bind(GDT $gdoType, GWS_Message $msg)
+	private static function bind(GDT $gdt, GWS_Message $msg)
 	{
 		try
 		{
-			if ($gdoType->isSerializable())
+			if ($gdt->isSerializable())
 			{
-				Logger::logWebsocket(sprintf("Reading %s as a %s.", $gdoType->name, get_class($gdoType)));
+				Logger::logWebsocket(sprintf("Reading %s as a %s.", $gdt->name, get_class($gdt)));
 				
-				if ($gdoType instanceof GDT_Checkbox)
+				if ($gdt instanceof GDT_Checkbox)
 				{
-					$gdoType->value($msg->read8() > 0);
+					$gdt->value($msg->read8() > 0);
 				}
-				elseif ($gdoType instanceof GDT_String)
+				elseif ($gdt instanceof GDT_String)
 				{
-					$gdoType->var($msg->readString());
+					$gdt->var($msg->readString());
 				}
-				elseif ( ($gdoType instanceof GDT_Decimal) ||
-						 ($gdoType instanceof GDT_Float) )
+				elseif ( ($gdt instanceof GDT_Decimal) ||
+						 ($gdt instanceof GDT_Float) )
 				{
-					$gdoType->value($msg->readFloat());
+					$gdt->value($msg->readFloat());
 				}
-				elseif ($gdoType instanceof GDT_Object)
+				elseif ($gdt instanceof GDT_Object)
 				{
-					$gdoType->var($msg->read32u());
+					$gdt->var($msg->read32u());
 				}
-				elseif ($gdoType instanceof GDT_Int)
+				elseif ($gdt instanceof GDT_Int)
 				{
-					$gdoType->value($msg->readN($gdoType->bytes, !$gdoType->unsigned));
+					$gdt->value($msg->readN($gdt->bytes, !$gdt->unsigned));
 				}
-				elseif ($gdoType instanceof GDT_Enum)
+				elseif ($gdt instanceof GDT_Enum)
 				{
-					$gdoType->var($gdoType->enumForId($msg->read16u()));
+					$gdt->var($gdt->enumForId($msg->read16u()));
 				}
-				elseif ($gdoType instanceof GDT_Timestamp)
+				elseif ($gdt instanceof GDT_Timestamp)
 				{
 					$ts = $msg->read32u();
 					if ($ts)
 					{
-						$gdoType->value($ts);
+						$gdt->value($ts);
 					}
 					else
 					{
-						$gdoType->var(null);
+						$gdt->var(null);
 					}
 				}
-				Logger::logWebsocket(sprintf("Reading %s as a %s for %s.", $gdoType->name, get_class($gdoType), $gdoType->var));
+				Logger::logWebsocket(sprintf("Reading %s as a %s with var %s.", $gdt->name, get_class($gdt), $gdt->var));
 				
 			}
 		}
 		catch (GDOException $ex)
 		{
 			Logger::logException($ex);
-			throw new GDOException("Cannot read {$gdoType->name} which is a " . get_class($gdoType));
+			throw new GDOException("Cannot read {$gdt->name} which is a " . get_class($gdt));
 		}
 	}
 }
