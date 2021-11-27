@@ -1,4 +1,6 @@
 <?php
+namespace GDO\Websocket\Server;
+
 use GDO\Core\Application;
 use GDO\Core\Logger;
 use GDO\Core\Debug;
@@ -7,7 +9,6 @@ use GDO\DB\Database;
 use GDO\Language\Trans;
 use GDO\Session\GDO_Session;
 use GDO\Websocket\Module_Websocket;
-use GDO\Websocket\Server\GWS_Server;
 use GDO\UI\GDT_Page;
 
 # Load config
@@ -24,12 +25,12 @@ $_REQUEST['mo'] = 'Websocket';
 $_REQUEST['me'] = 'Run';
 
 # Bootstrap
-class WebsocketApplication extends Application
+class GWS_ServerMain extends Application
 {
 	public function isCLI() { return true; }
 	public function isWebsocket() { return true; }
 }
-new WebsocketApplication();
+new GWS_ServerMain();
 Trans::$ISO = GDO_LANGUAGE;
 Logger::init(null, Logger::_ALL&~Logger::BUFFERED); # 1st init as guest
 Debug::init();
@@ -51,7 +52,7 @@ require $processorPath;
 $processor = $gws->processorClass();
 
 $server = new GWS_Server();
-if (GDO_IPC && (GDO_IPC !== 'db') )
+if (GDO_IPC && (GDO_IPC !== 'db'))
 {
 	$server->ipcTimer();
 }
