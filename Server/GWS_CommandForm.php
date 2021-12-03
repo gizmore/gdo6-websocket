@@ -10,8 +10,8 @@ use GDO\DB\GDT_Int;
 use GDO\Core\GDT_JSONResponse;
 use GDO\Core\GDT;
 use GDO\Core\GDOException;
-use GDO\UI\GDT_Panel;
 use GDO\Core\Website;
+use GDO\Core\GDT_Success;
 
 /**
  * Call MethodForm via websockets.
@@ -80,14 +80,14 @@ abstract class GWS_CommandForm extends GWS_Command
 	private function payloadFromResponse(GDT_Response $response)
 	{
 		$payload = '';
-		foreach ($response->getFieldsRec() as $gdt)
+		foreach ($response->getFields() as $gdt)
 		{
 			$payload .= $this->payloadFromField($gdt);
 		}
 		
 		if (@Website::$TOP_RESPONSE)
 		{
-		    $payload = Website::$TOP_RESPONSE->renderCLI() . $payload . chr(0);
+		    $payload .= Website::$TOP_RESPONSE->renderCLI() . chr(0);
 		}
 		
 		return $payload;
@@ -111,11 +111,19 @@ abstract class GWS_CommandForm extends GWS_Command
 		{
 			$payload .= GWS_Message::wrN($gdt->bytes, $gdt->getValue());
 		}
-		elseif ($gdt instanceof GDT_Panel)
+		elseif ($gdt instanceof GDT_Success)
 		{
-		    $text = $gdt->renderText();
-			$payload .= GWS_Message::wrS($text);
+		    $payload .= GWS_Message::wrS($gdt->renderText());
 		}
+		
+// 		if ($fields = $gdt->getFields())
+// 		{
+// 			foreach ($fields as $gdt2)
+// 			{
+// 				$payload .= $this->payloadFromField($gdt2);
+// 			}
+// 		}
+		
 		return $payload;
 	}
 

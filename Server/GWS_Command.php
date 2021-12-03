@@ -67,7 +67,12 @@ abstract class GWS_Command
 		    
 			$field->gdo($gdo);
 			
-			if ($field instanceof GDT_String)
+			if ($field instanceof GDT_Position)
+			{
+				$payload .= GWS_Message::wrF(floatval($field->getLat()));
+				$payload .= GWS_Message::wrF(floatval($field->getLng()));
+			}
+			elseif ($field instanceof GDT_String)
 			{
 				$payload .= GWS_Message::wrS($gdo->getVar($field->name));
 			}
@@ -92,12 +97,7 @@ abstract class GWS_Command
 				{
 					$time = Time::getTimestamp($date);
 				}
-				$payload .= GWS_Message::wr32($time);
-			}
-			elseif ($field instanceof GDT_Position)
-			{
-				$payload .= GWS_Message::wrF($field->getLat());
-				$payload .= GWS_Message::wrF($field->getLng());
+				$payload .= GWS_Message::wr32(floor($time));
 			}
 			else
 			{
