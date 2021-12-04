@@ -15,7 +15,6 @@ use GDO\UI\GDT_Page;
 use GDO\Core\GDT_Array;
 use GDO\Angular\Module_Angular;
 use GDO\Core\Application;
-use GDO\UI\GDT_Paragraph;
 
 /**
  * Websocket server module.
@@ -112,10 +111,14 @@ window.GDO_CONFIG.ws_autoconnect = %s;',
 	    if ($this->cfgLeftBar())
 	    {
 	        $navbar = GDT_Page::$INSTANCE->leftNav;
+	        
    			$this->templatePHP('leftbar.php', ['navbar' => $navbar]);
 		}
 	}
 	
+	#############
+	### Hooks ###
+	#############
 	public function hookIgnoreDocsFiles(GDT_Array $ignore)
 	{
 	    $ignore->data[] = 'GDO/Websocket/gwf4-ratchet/**/*';
