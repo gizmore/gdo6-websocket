@@ -3,9 +3,14 @@
 ## Install acme.sh
 Install acme.sh for LetsEncrypt
 Create a certificate with acme.sh
-    ./acme.sh -- issue --hookthepemstuff..... (TODO: EXPLAIN)
+
+    acme.sh --issue --domain foo.com --apache --writable /home/user/www/gdo6
+    
     
 ### Create PEM formats
+
+not required anymore?
+
     # Create PFX
     openssl pkcs12 -export -out gizmore.org.pfx -inkey gizmore.org.key -in fullchain.cer -nodes
     # Create chain PEM
@@ -14,9 +19,12 @@ Create a certificate with acme.sh
     
     
 ## Install nginx
+
 Add a TLS proxy site.
 In this example we offer wss://gizmore.org:61222 and proxy to gizmore:org:61221.
+
     root@h1111111:~# cat /etc/nginx/sites-enabled/gizmore_wss
+    
     upstream websocketserver {
         server gizmore.org:61221;
     }
@@ -47,6 +55,7 @@ In this example we offer wss://gizmore.org:61222 and proxy to gizmore:org:61221.
     }
 
 ## Configure gdo6
+
 Configure the Websocket module in gdo6.
 Set the ws_url to wss://gizmore.org:61222
 Set the ws_port to 61221

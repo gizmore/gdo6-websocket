@@ -10,10 +10,12 @@ use GDO\DB\GDT_Int;
 use GDO\Session\GDO_Session;
 use GDO\Javascript\Javascript;
 use GDO\Util\Strings;
+use GDO\UI\GDT_CodeParagraph;
 use GDO\UI\GDT_Page;
 use GDO\Core\GDT_Array;
 use GDO\Angular\Module_Angular;
 use GDO\Core\Application;
+use GDO\UI\GDT_Paragraph;
 
 /**
  * Websocket server module.
@@ -25,7 +27,7 @@ use GDO\Core\Application;
  * 
  * @author gizmore
  * 
- * @version 6.10.1
+ * @version 6.11.0
  * @since 6.5.0
  */
 final class Module_Websocket extends GDO_Module
@@ -117,6 +119,13 @@ window.GDO_CONFIG.ws_autoconnect = %s;',
 	public function hookIgnoreDocsFiles(GDT_Array $ignore)
 	{
 	    $ignore->data[] = 'GDO/Websocket/gwf4-ratchet/**/*';
+	}
+	
+	public function hookInstallCronjob(array &$fields)
+	{
+		$cron = $this->filePath('bin/cron_start_websocket_server.sh');
+		$websocket_cronjob_code = "* * * * * {$cron} > /dev/null";
+		$fields[] = GDT_CodeParagraph::make()->textRaw($websocket_cronjob_code);
 	}
 	
 }
