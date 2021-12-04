@@ -15,6 +15,8 @@ use GDO\UI\GDT_Page;
 use GDO\Core\GDT_Array;
 use GDO\Angular\Module_Angular;
 use GDO\Core\Application;
+use GDO\Core\GDT_Template;
+use GDO\UI\GDT_Link;
 
 /**
  * Websocket server module.
@@ -110,9 +112,13 @@ window.GDO_CONFIG.ws_autoconnect = %s;',
 	{
 	    if ($this->cfgLeftBar())
 	    {
-	        $navbar = GDT_Page::$INSTANCE->leftNav;
-	        
-   			$this->templatePHP('leftbar.php', ['navbar' => $navbar]);
+	    	$navbar = GDT_Page::$INSTANCE->leftNav;
+	    	if (module_enabled('Angular'))
+	    	{
+	    		$navbar->addField(
+	    			GDT_Template::make()->template('Websocket', 'ws-connect-bar.php'));
+	    	}
+	    	$navbar->addField(GDT_Link::make()->href($this->href('Exec'))->label('link_ws_exec'));
 		}
 	}
 	
