@@ -17,6 +17,9 @@ use GDO\Angular\Module_Angular;
 use GDO\Core\Application;
 use GDO\Core\GDT_Template;
 use GDO\UI\GDT_Link;
+use GDO\UI\GDT_Container;
+use GDO\DB\GDT_String;
+use GDO\User\GDO_User;
 
 /**
  * Websocket server module.
@@ -28,7 +31,7 @@ use GDO\UI\GDT_Link;
  * 
  * @author gizmore
  * 
- * @version 6.11.0
+ * @version 6.11.1
  * @since 6.5.0
  */
 final class Module_Websocket extends GDO_Module
@@ -48,8 +51,9 @@ final class Module_Websocket extends GDO_Module
 		return [
 			GDT_Checkbox::make('ws_autoconnect')->initial('0'),
 			GDT_Checkbox::make('ws_guests')->initial('1'),
+			GDT_String::make('ws_exec_permission')->initial('staff'),
 			GDT_Int::make('ws_port')->bytes(2)->unsigned()->initial('61221'),
-			GDT_Duration::make('ws_timer')->initial('0'),
+			GDT_Duration::make('ws_timer')->initial('0s'),
 			GDT_Path::make('ws_processor')->initial($this->defaultProcessorPath())->existingFile(),
 			GDT_Url::make('ws_url')->initial('ws://'.GDT_Url::host().':61221')->schemes('wss', 'ws'),
 		    GDT_Checkbox::make('ws_left_bar')->initial('1'),
@@ -62,6 +66,7 @@ final class Module_Websocket extends GDO_Module
 	public function cfgWebsocketProcessorPath() { return $this->getConfigValue('ws_processor'); }
 	public function cfgAllowGuests() { return $this->getConfigValue('ws_guests'); }
 	public function cfgLeftBar() { return $this->getConfigValue('ws_left_bar'); }
+	public function cfgClientPermission() { return $this->getConfigVar('ws_exec_permission'); }
 	
 	public function defaultProcessorPath() { return sprintf('%sGDO/Websocket/Server/GWS_NoCommands.php', GDO_PATH); }
 	public function processorClass()
@@ -118,7 +123,11 @@ window.GDO_CONFIG.ws_autoconnect = %s;',
 	    		$navbar->addField(
 	    			GDT_Template::make()->template('Websocket', 'ws-connect-bar.php'));
 	    	}
-	    	$navbar->addField(GDT_Link::make()->href($this->href('Exec'))->label('link_ws_exec'));
+	    	
+	    	if (GDO_User::current()->hasPermission($this->cfgClientPermission()))
+	    	{
+	    		$navbar->addField(GDT_Link::make()->href($this->href('Exec'))->label('link_ws_exec'));
+	    	}
 		}
 	}
 	
@@ -130,11 +139,11 @@ window.GDO_CONFIG.ws_autoconnect = %s;',
 	    $ignore->data[] = 'GDO/Websocket/gwf4-ratchet/**/*';
 	}
 	
-	public function hookInstallCronjob(array &$fields)
+	public function hookInstallCronjob(GDT_Container $container)
 	{
 		$cron = $this->filePath('bin/cron_start_websocket_server.sh');
 		$websocket_cronjob_code = "* * * * * {$cron} > /dev/null";
-		$fields[] = GDT_CodeParagraph::make()->textRaw($websocket_cronjob_code);
+		$container->addField(GDT_CodeParagraph::make()->textRaw($websocket_cronjob_code));
 	}
 	
 }

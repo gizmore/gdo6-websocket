@@ -1,6 +1,7 @@
 <?php
 return array(
 'btn_connect' => 'Verbinden',
+'link_ws_exec' => 'Websocket Client',
 'err_gws_unknown_cmd' => 'Unbekannter Websocket Befehl: %s.',
 'err_setting_validate' => 'Die Einstellung konnte nicht gespeichert werden: %s',
 'err_setting_unchanged' => 'Die Einstellung wurde nicht geändert.',
