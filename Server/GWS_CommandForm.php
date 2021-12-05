@@ -12,6 +12,7 @@ use GDO\Core\GDT;
 use GDO\Core\GDOException;
 use GDO\Core\Website;
 use GDO\Core\GDT_Success;
+use GDO\Session\GDO_Session;
 
 /**
  * Call MethodForm via websockets.
@@ -62,6 +63,7 @@ abstract class GWS_CommandForm extends GWS_Command
 		}
 		else
 		{
+			GDO_Session::instance()->commit();
 			$this->replySuccess($msg, $form, $response);
 			$this->afterReplySuccess($msg);
 		}

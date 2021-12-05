@@ -22,6 +22,8 @@ use GDO\Core\GDO;
 use GDO\Language\Trans;
 use GDO\Core\Application;
 use GDO\Date\Time;
+use GDO\UI\GDT_Page;
+use GDO\Core\GDT_Response;
 
 require_once 'GWS_Message.php';
 require_once 'GDO/Websocket/gwf4-ratchet/autoload.php';
@@ -162,7 +164,16 @@ final class GWS_Server implements MessageComponentInterface
 		else
 		{
 			try {
-				$_REQUEST = array('_fmt'=>'ws'); # start with a blank request emulation
+				GDT_Page::$INSTANCE->reset();
+				GDT_Response::newWith();
+// 				$_REQUEST = ['_fmt'=>'ws']; # start with a blank request emulation
+				$_GET = [];
+				$_POST = [];
+				$_REQUEST = [];
+				$_FILES = [];
+				$_REQUEST['_fmt'] = 'json';
+				$_REQUEST['_ajax'] = 1;
+				GDT_Page::$INSTANCE->reset();
 				/**
 				 * @var GDO_User $user
 				 */
@@ -175,10 +186,12 @@ final class GWS_Server implements MessageComponentInterface
 				Trans::setISO($langISO);
 				Time::setTimezone($user->getTimezone());
 				$this->handler->executeMessage($message);
+				GDO_Session::commit();
 			}
-			catch (Exception $e) {
-				Logger::logWebsocket(Debug::backtraceException($e, false));
-				$message->replyErrorMessage($message->cmd(), $e->getMessage());
+			catch (\Throwable $ex)
+			{
+				Logger::logWebsocket(Debug::backtraceException($ex, false));
+				$message->replyErrorMessage($message->cmd(), $ex->getMessage());
 			}
 		}
 	}

@@ -90,7 +90,7 @@ class GWS_Commands
 		$command = self::$COMMANDS[$cmd];
 		if ($session = GDO_Session::instance())
 		{
-			$session->saveVar('sess_last_url', "ws://" . get_class($command));
+			$session->setVar('sess_last_url', "ws://" . get_class($command));
 		}
 		Logger::logWebsocket("Executing " . get_class($command));
 		return $command->setMessage($message);
