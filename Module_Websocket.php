@@ -107,7 +107,7 @@ window.GDO_CONFIG.ws_autoconnect = %s;',
 	public function secret()
 	{
 		$sess = GDO_Session::instance();
-		return $sess ? $sess->cookieContent() : 'resend';
+		return $sess ? $sess->cookieContent() : GDO_Session::DUMMY_COOKIE_CONTENT;
 	}
 	
 	##############
