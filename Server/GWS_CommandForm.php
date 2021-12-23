@@ -175,7 +175,7 @@ abstract class GWS_CommandForm extends GWS_Command
 		{
 			$name = $submit->name;
 			$f = $form->formName();
-			$_REQUEST[$f][$name] = $_POST[$f][$name] = $name;
+			$_REQUEST[$f][$name] = $name;
 		}
 	}
 
