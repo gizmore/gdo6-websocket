@@ -120,6 +120,7 @@ final class GWS_Message
 		$this->index = $index;
 		return $back;
 	}
+	
 	public function readString($index=-1)
 	{
 		$string = '';
